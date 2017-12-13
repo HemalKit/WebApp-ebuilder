@@ -145,6 +145,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\approval.cs" />
+    <Compile Include="Models\attendance.cs" />
+    <Compile Include="Models\duty_leave.cs" />
+    <Compile Include="Models\employee.cs" />
+    <Compile Include="Models\leav.cs" />
+    <Compile Include="Models\leave_type.cs" />
+    <Compile Include="Models\notification.cs" />
+    <Compile Include="Models\task.cs" />
+    <Compile Include="Models\tracking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -187,7 +196,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
