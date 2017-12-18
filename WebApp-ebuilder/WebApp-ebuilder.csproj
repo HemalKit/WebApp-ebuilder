@@ -138,9 +138,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIAccess.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -149,6 +151,7 @@
     <Compile Include="Models\attendance.cs" />
     <Compile Include="Models\duty_leave.cs" />
     <Compile Include="Models\employee.cs" />
+    <Compile Include="Models\employeeLogin.cs" />
     <Compile Include="Models\leav.cs" />
     <Compile Include="Models\leave_type.cs" />
     <Compile Include="Models\notification.cs" />
@@ -193,6 +196,9 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Employees\Register.cshtml" />
+    <Content Include="Views\Employees\Login.cshtml" />
+    <Content Include="Views\Home\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
