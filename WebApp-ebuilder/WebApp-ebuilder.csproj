@@ -138,10 +138,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="APIAccess.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Authorizer\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Authorizer\CustomPrincipal.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -149,6 +151,7 @@
     </Compile>
     <Compile Include="Models\approval.cs" />
     <Compile Include="Models\attendance.cs" />
+    <Compile Include="Models\customPrincipalSerializeModel.cs" />
     <Compile Include="Models\duty_leave.cs" />
     <Compile Include="Models\employee.cs" />
     <Compile Include="Models\employeeLogin.cs" />
@@ -158,6 +161,7 @@
     <Compile Include="Models\task.cs" />
     <Compile Include="Models\tracking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\BaseViewPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -202,6 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
