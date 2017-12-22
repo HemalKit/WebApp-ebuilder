@@ -20,6 +20,7 @@ namespace WebApp_ebuilder
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            
         }
 
         protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
@@ -35,6 +36,7 @@ namespace WebApp_ebuilder
                     CustomPrincipal newUser = new CustomPrincipal(authTicket.Name);
 
                     newUser.email = serializeModel.email;
+                    newUser.EID = serializeModel.EID;
                     newUser.FirstName = serializeModel.FirstName;
                     newUser.LastName = serializeModel.LastName;
                     newUser.Role = serializeModel.Role;

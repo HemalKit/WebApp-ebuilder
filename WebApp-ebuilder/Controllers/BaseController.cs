@@ -9,9 +9,12 @@ namespace WebApp_ebuilder.Controllers
 {
     public class BaseController : Controller
     {
+       public string BaseUrl = "http://localhost:61355/api/";
        protected virtual new CustomPrincipal User
        {
             get { return HttpContext.User as CustomPrincipal; }
        }
     }
+
+
 }

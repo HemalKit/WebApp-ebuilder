@@ -30,6 +30,7 @@ namespace WebApp_ebuilder.Authorizer
         }
 
         public string email { get; set; }
+        public string EID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Role { get; set; }

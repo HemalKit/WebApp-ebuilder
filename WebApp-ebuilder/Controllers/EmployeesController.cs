@@ -7,12 +7,15 @@ using System.Web.Script.Serialization;
 using System.Web.Security;
 using System.Web;
 using Newtonsoft.Json;
+using WebApp_ebuilder.Authorizer;
+using System.Net.Http.Headers;
 
 namespace WebApp_ebuilder.Controllers
 {
     public class EmployeesController : BaseController
     {
         [HttpGet]
+        
         public ActionResult Register()
         {
             return View();
@@ -28,7 +31,6 @@ namespace WebApp_ebuilder.Controllers
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    string BaseUrl = "http://localhost:61355/api/";
                     client.BaseAddress = new Uri(BaseUrl);
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
@@ -63,17 +65,13 @@ namespace WebApp_ebuilder.Controllers
                     }
 
                 }
-
             }
             else
             {
                 message = "Invalid request";
-
             }
             ViewBag.message = message;
             return View(newEmployee);
-
-
         }
 
 
@@ -88,17 +86,16 @@ namespace WebApp_ebuilder.Controllers
         [ValidateAntiForgeryToken]
         public async System.Threading.Tasks.Task<ActionResult> Login(employeeLogin login, string ReturnUrl="")
         {
-            string message = "Out of the try block";
+            string message = "";
             try
             {
                 message = "Entered the try block";
                 using (HttpClient client = new HttpClient())
                 {
-                    message = "Inside the using client block";
-                    string BaseUrl = "http://localhost:61355/api/";
+                   
                     client.BaseAddress = new Uri(BaseUrl);
                     client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
 
                     var serializer = new JavaScriptSerializer();
                     var json = serializer.Serialize(login);
@@ -118,6 +115,7 @@ namespace WebApp_ebuilder.Controllers
 
                             customPrincipalSerializeModel serializeEmployee = new customPrincipalSerializeModel();
                             serializeEmployee.email = empData.email;
+                            serializeEmployee.EID = empData.EID;
                             serializeEmployee.FirstName = empData.fName;
                             serializeEmployee.LastName = empData.lName;
                             serializeEmployee.Role = empData.jobCategory;
@@ -165,12 +163,10 @@ namespace WebApp_ebuilder.Controllers
                 ViewBag.message = ex;
                 return View();
             }
-
-
         }
 
 
-        [Authorize]
+        [CustomAuthorize]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
@@ -180,9 +176,27 @@ namespace WebApp_ebuilder.Controllers
 
         [Authorize]
         [HttpGet]
-        public ActionResult Profile()
+        public ActionResult ViewProfile()
         {
             return View();
         }
+
+       /* [HttpDelete]
+        public async System.Threading.Tasks.Task<EmptyResult> RemoveAsync(string id)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+
+                var response = await client.DeleteAsync("Employees/" + id);
+                if( response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return EmptyResult;
+                }
+
+            }
+        }*/
     }
 }
