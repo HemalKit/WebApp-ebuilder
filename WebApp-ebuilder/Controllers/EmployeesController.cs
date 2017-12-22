@@ -6,12 +6,16 @@ using System.Text;
 using System.Web.Script.Serialization;
 using System.Web.Security;
 using System.Web;
+using Newtonsoft.Json;
+using WebApp_ebuilder.Authorizer;
+using System.Net.Http.Headers;
 
 namespace WebApp_ebuilder.Controllers
 {
-    public class EmployeesController : Controller
+    public class EmployeesController : BaseController
     {
         [HttpGet]
+        
         public ActionResult Register()
         {
             return View();
@@ -19,6 +23,7 @@ namespace WebApp_ebuilder.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
         public async System.Threading.Tasks.Task<ActionResult> Register([Bind(Exclude = "emailVerified,activationCode")] employee newEmployee)
         {
             string message = "";
@@ -26,7 +31,6 @@ namespace WebApp_ebuilder.Controllers
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    string BaseUrl = "http://localhost:61355/api/";
                     client.BaseAddress = new Uri(BaseUrl);
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
@@ -61,17 +65,13 @@ namespace WebApp_ebuilder.Controllers
                     }
 
                 }
-
             }
             else
             {
                 message = "Invalid request";
-
             }
             ViewBag.message = message;
             return View(newEmployee);
-
-
         }
 
 
@@ -87,63 +87,86 @@ namespace WebApp_ebuilder.Controllers
         public async System.Threading.Tasks.Task<ActionResult> Login(employeeLogin login, string ReturnUrl="")
         {
             string message = "";
-            using (HttpClient client = new HttpClient())
+            try
             {
-                string BaseUrl = "http://localhost:61355/api/";
-                client.BaseAddress = new Uri(BaseUrl);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
-
-                var serializer = new JavaScriptSerializer();
-                var json = serializer.Serialize(login);
-                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-
-
-                var response = await client.PostAsync("Access", stringContent);
-                if (response.IsSuccessStatusCode)
+                message = "Entered the try block";
+                using (HttpClient client = new HttpClient())
                 {
-                    if (response.Content.ReadAsStringAsync().Result == "true")
+                   
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+
+                    var serializer = new JavaScriptSerializer();
+                    var json = serializer.Serialize(login);
+                    var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+                    var response = await client.PostAsync("Access", stringContent);
+                    if (response.IsSuccessStatusCode)
                     {
-                        message = "Success Login";
-
-                        int timeout = login.rememberMe ? 525600 : 1; //525600 min = 1 year
-                        var ticket = new FormsAuthenticationTicket(login.email, login.rememberMe, timeout);
-                        string encrypted = FormsAuthentication.Encrypt(ticket);
-                        var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
-                        cookie.Expires = DateTime.Now.AddMinutes(timeout);
-                        cookie.HttpOnly = true;
-                        Response.Cookies.Add(cookie);
-
-                        if (Url.IsLocalUrl(ReturnUrl))
+                       
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            return Redirect(ReturnUrl);
+                            message = "Success Login";
+
+                            var responseData = response.Content.ReadAsStringAsync().Result;
+                            var empData = JsonConvert.DeserializeObject<employee>(responseData);
+
+                            customPrincipalSerializeModel serializeEmployee = new customPrincipalSerializeModel();
+                            serializeEmployee.email = empData.email;
+                            serializeEmployee.EID = empData.EID;
+                            serializeEmployee.FirstName = empData.fName;
+                            serializeEmployee.LastName = empData.lName;
+                            serializeEmployee.Role = empData.jobCategory;
+
+                            string accessData = JsonConvert.SerializeObject(serializeEmployee);
+
+                            int timeout = login.rememberMe ? 525600 : 10; //525600 min = 1 year
+
+                            var ticket = new FormsAuthenticationTicket(1, login.email, DateTime.Now, DateTime.Now.AddMinutes(timeout), true, accessData);
+                            string encrypted = FormsAuthentication.Encrypt(ticket);
+
+                            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+                            cookie.Expires = DateTime.Now.AddMinutes(timeout);
+                            cookie.HttpOnly = true;
+                            Response.Cookies.Add(cookie);// add cookie with the encrypted ticket
+
+
+                            if (Url.IsLocalUrl(ReturnUrl))
+                            {
+                                return Redirect(ReturnUrl);
+
+                            }
+                            else
+                            {
+                                return RedirectToAction("Dashboard", "Home");
+                            }
 
                         }
-                        else
+                        else if (response.Content.ReadAsStringAsync().Result == null)
                         {
-                            return RedirectToAction("Dashboard", "Home");
+                            message = " Wrong Email or Password";
                         }
-
                     }
-                    else if (response.Content.ReadAsStringAsync().Result == "false")
+                    else
                     {
-                        message = " Wrong Email or Password";
+                        message = "Wrong Email or Password ";
                     }
-                }
-                else
-                {
-                    message = "An error occured";
-                }
 
-                ViewBag.message = message;
+                    ViewBag.message = message;
+                    return View();
+                }
+            }
+            catch(Exception ex)
+            {
+                ViewBag.message = ex;
                 return View();
             }
-
-
         }
 
 
-        [Authorize]
+        [CustomAuthorize]
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
@@ -153,9 +176,27 @@ namespace WebApp_ebuilder.Controllers
 
         [Authorize]
         [HttpGet]
-        public ActionResult Profile()
+        public ActionResult ViewProfile()
         {
             return View();
         }
+
+       /* [HttpDelete]
+        public async System.Threading.Tasks.Task<EmptyResult> RemoveAsync(string id)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+
+                var response = await client.DeleteAsync("Employees/" + id);
+                if( response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return EmptyResult;
+                }
+
+            }
+        }*/
     }
 }

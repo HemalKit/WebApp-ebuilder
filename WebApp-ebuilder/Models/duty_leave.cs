@@ -24,8 +24,7 @@ namespace WebApp_ebuilder.Models
         public System.TimeSpan appointmentTime { get; set; }
         public Nullable<System.TimeSpan> duration { get; set; }
         public string EID { get; set; }
-        public float longitude { get; set; }
-        public float latitude { get; set; }
+        public string location { get; set; }
 
         public virtual employee employee { get; set; }
         internal virtual ICollection<tracking> trackings { get; set; }
