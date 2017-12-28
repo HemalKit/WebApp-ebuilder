@@ -159,7 +159,9 @@
     <Compile Include="Models\duty_leave.cs" />
     <Compile Include="Models\employee.cs" />
     <Compile Include="Models\employeeLogin.cs" />
+    <Compile Include="Models\employeeRegister.cs" />
     <Compile Include="Models\leav.cs" />
+    <Compile Include="Models\leaveApplyForm.cs" />
     <Compile Include="Models\leave_type.cs" />
     <Compile Include="Models\notification.cs" />
     <Compile Include="Models\task.cs" />
@@ -205,16 +207,17 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Employees\Register.cshtml" />
     <Content Include="Views\Employees\Login.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
-    <Content Include="Views\Leaves\ApplyLeave.cshtml" />
     <Content Include="Views\DutyLeaves\TrackLocation.cshtml" />
     <Content Include="Views\DutyLeaves\ApplyDutyLeave.cshtml" />
     <Content Include="Views\Shared\_LayoutLoggedIn.cshtml" />
     <Content Include="Views\Attendance\ViewAttendance.cshtml" />
     <Content Include="Views\Leaves\ViewLeaves.cshtml" />
     <Content Include="Views\Tasks\ViewTasks.cshtml" />
+    <Content Include="Views\Employees\Register.cshtml" />
+    <Content Include="Views\Leaves\ApplyLeave.cshtml" />
+    <Content Include="Views\DutyLeaves\ViewDutyLeaves.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

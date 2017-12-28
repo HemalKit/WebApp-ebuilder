@@ -18,15 +18,16 @@ namespace WebApp_ebuilder.Controllers
         
         public ActionResult Register()
         {
+            ViewBag.Message = null;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         
-        public async System.Threading.Tasks.Task<ActionResult> Register([Bind(Exclude = "emailVerified,activationCode")] employee newEmployee)
+        public async System.Threading.Tasks.Task<ActionResult> Register(employeeRegister newEmployeeForm)
         {
-            string message = "";
+            string message = null;
             if (ModelState.IsValid)
             {
                 using (HttpClient client = new HttpClient())
@@ -36,7 +37,7 @@ namespace WebApp_ebuilder.Controllers
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
                     // check whether an employee already exists with the given ID
-                    var response = await client.GetAsync("Employees/" + newEmployee.EID);
+                    var response = await client.GetAsync("Employees/" + newEmployeeForm.EID);
 
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
@@ -44,10 +45,25 @@ namespace WebApp_ebuilder.Controllers
                     }
                     else
                     {
-                        message = "The employee was not found with EID";
+                        employee newEmployee = new employee();
+
+                        newEmployee.EID = newEmployeeForm.EID;
+                        newEmployee.password = newEmployeeForm.password;
+                        newEmployee.email = newEmployeeForm.email;
+                        newEmployee.dob = newEmployeeForm.dob;
+                        newEmployee.fName = newEmployeeForm.fName;
+                        newEmployee.lName = newEmployeeForm.lName;
+                        newEmployee.gender = newEmployeeForm.gender;
+                        newEmployee.homeNo = newEmployeeForm.homeNo;
+                        newEmployee.street = newEmployeeForm.street;
+                        newEmployee.city = newEmployeeForm.city;
+                        newEmployee.jobCategory = newEmployeeForm.jobCategory;
+
+                        
                         newEmployee.activationCode = Guid.NewGuid().ToString();
                         newEmployee.emailVerified = false;
 
+                       
                         var serializer = new JavaScriptSerializer();
                         var json = serializer.Serialize(newEmployee);
                         var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -70,8 +86,8 @@ namespace WebApp_ebuilder.Controllers
             {
                 message = "Invalid request";
             }
-            ViewBag.message = message;
-            return View(newEmployee);
+            ViewBag.Message = message;
+            return View(newEmployeeForm);
         }
 
 

@@ -45,5 +45,39 @@ namespace WebApp_ebuilder.Controllers
         {
             return View();
         }
+
+
+        [CustomAuthorize]
+        public async System.Threading.Tasks.Task<ActionResult> ViewDutyLeaves()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
+
+                    var response = await client.GetAsync("DutyLeaves?EID="+User.EID);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseData = response.Content.ReadAsStringAsync().Result;
+                        var dutyLeavesData = JsonConvert.DeserializeObject<List<duty_leave>>(responseData);
+                        return View(dutyLeavesData);
+                    }
+                    else
+                    {
+                        ViewBag.Message = "An error occured";
+                    }
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "An error occured";
+                return View();
+            }           
+        }
+
     }
 }

@@ -20,7 +20,7 @@ namespace WebApp_ebuilder.Authorizer
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-           
+            
             if (filterContext.HttpContext.Request.IsAuthenticated)
             {
                 var authorizedUsers = ConfigurationManager.AppSettings[UsersConfigKey];
@@ -28,7 +28,7 @@ namespace WebApp_ebuilder.Authorizer
 
                 Users = String.IsNullOrEmpty(Users) ? authorizedUsers : Users;
                 Roles = String.IsNullOrEmpty(Roles) ? "HR-Admin,Managerial,Non-Managerial" : Roles;
-
+               
                 if (!String.IsNullOrEmpty(Roles))
                 {
                    
@@ -51,6 +51,12 @@ namespace WebApp_ebuilder.Authorizer
                         // base.OnAuthorization(filterContext); //returns to login url
                     }
                 }*/
+
+            }
+            else
+            {
+                filterContext.Result = new RedirectToRouteResult(new
+                       RouteValueDictionary(new { controller = "Home", action = "Index" }));
 
             }
         }
