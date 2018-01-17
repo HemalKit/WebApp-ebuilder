@@ -27,7 +27,7 @@ namespace WebApp_ebuilder.Authorizer
                 var authorizedRoles = ConfigurationManager.AppSettings[RolesConfigKey];
 
                 Users = String.IsNullOrEmpty(Users) ? authorizedUsers : Users;
-                Roles = String.IsNullOrEmpty(Roles) ? "HR-Admin,Managerial,Non-Managerial" : Roles;
+                Roles = String.IsNullOrEmpty(Roles) ? "HR Admin,Managerial,Non-Managerial" : Roles;
                
                 if (!String.IsNullOrEmpty(Roles))
                 {

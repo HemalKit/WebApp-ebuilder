@@ -51,7 +51,10 @@ namespace WebApp_ebuilder.Controllers
 
                     response = await client.GetAsync("LeaveTypes?leaveCategory=" + leaveForm.leaveCategory + "&jobCategory="+User.Role );
                     responseData = response.Content.ReadAsStringAsync().Result;
-                    var leaveTypeDetails = JsonConvert.DeserializeObject<leave_type>(responseData);
+                    //ViewBag.Message = responseData.ToString();
+                    //return View();
+                    var leaveTypeDetails = JsonConvert.DeserializeObject<List<leave_type>>(responseData).FirstOrDefault();
+                    
 
                     int leaveCount = 0;
 
@@ -65,6 +68,8 @@ namespace WebApp_ebuilder.Controllers
                     if(leaveCount >= leaveTypeDetails.maxAllowed)
                     {
                         message = "All leaves for this category are already taken";
+                        ViewBag.Message = message;
+                        return View();
                     }
 
                     leav newLeave = new leav();
@@ -78,7 +83,7 @@ namespace WebApp_ebuilder.Controllers
                     var json = serializer.Serialize(newLeave);
                     var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-                    response = await client.PostAsync("Leaves?date", stringContent );
+                    response = await client.PostAsync("Leaves", stringContent );
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -104,7 +109,7 @@ namespace WebApp_ebuilder.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var response = await client.GetAsync("Leaves");
+                var response = await client.GetAsync("Leaves?EID="+User.EID);
                 if (response.IsSuccessStatusCode)
                 {
                     var responseData = response.Content.ReadAsStringAsync().Result;

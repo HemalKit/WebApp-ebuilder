@@ -149,6 +149,7 @@
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LeavesController.cs" />
+    <Compile Include="Controllers\LeaveTypesController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -218,6 +219,12 @@
     <Content Include="Views\Employees\Register.cshtml" />
     <Content Include="Views\Leaves\ApplyLeave.cshtml" />
     <Content Include="Views\DutyLeaves\ViewDutyLeaves.cshtml" />
+    <Content Include="Views\LeaveTypes\Index.cshtml" />
+    <Content Include="Views\LeaveTypes\Create.cshtml" />
+    <Content Include="Views\Employees\ViewEmployees.cshtml" />
+    <Content Include="Views\Employees\Delete.cshtml" />
+    <Content Include="Views\LeaveTypes\Edit.cshtml" />
+    <Content Include="Views\Employees\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
