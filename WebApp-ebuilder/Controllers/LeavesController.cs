@@ -21,37 +21,83 @@ namespace WebApp_ebuilder.Controllers
             return View();
         }
 
+        [CustomAuthorize]
         [HttpGet]               
         public ActionResult ApplyLeave()
         {
             return View();
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async System.Threading.Tasks.Task<ActionResult> ApplyLeave(leav leaveForm)
+        [CustomAuthorize]
+        public async System.Threading.Tasks.Task<ActionResult> ApplyLeave(leaveApplyForm leaveForm)
         {
+            var message = "";
             if (ModelState.IsValid)
             {
+                
                 using (HttpClient client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(BaseUrl);
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
+                    var response = await client.GetAsync("Leaves?EID==" +User.EID + "&leaveCategory=" + leaveForm.leaveCategory);
+
+                    var responseData = response.Content.ReadAsStringAsync().Result;
+                    var leavesTaken = JsonConvert.DeserializeObject<List<leav>>(responseData);
+
+                    response = await client.GetAsync("LeaveTypes?leaveCategory=" + leaveForm.leaveCategory + "&jobCategory="+User.Role );
+                    responseData = response.Content.ReadAsStringAsync().Result;
+                    //ViewBag.Message = responseData.ToString();
+                    //return View();
+                    var leaveTypeDetails = JsonConvert.DeserializeObject<List<leave_type>>(responseData).FirstOrDefault();
+                    
+
+                    int leaveCount = 0;
+
+                    foreach (leav leave in leavesTaken)
+                    {
+                        if(leave.date.Year == leaveForm.date.Year)
+                        {
+                            leaveCount++;
+                        }
+                    }
+                    if(leaveCount >= leaveTypeDetails.maxAllowed)
+                    {
+                        message = "All leaves for this category are already taken";
+                        ViewBag.Message = message;
+                        return View();
+                    }
+
+                    leav newLeave = new leav();
+                    newLeave.EID = User.EID;
+                    newLeave.date = leaveForm.date;
+                    newLeave.reason = leaveForm.reason;
+                    newLeave.jobCategory = User.Role;
+                    newLeave.leaveCategory = leaveForm.leaveCategory;
+
                     var serializer = new JavaScriptSerializer();
-                    var json = serializer.Serialize(leaveForm);
+                    var json = serializer.Serialize(newLeave);
                     var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-                    var response = await client.PostAsync("Leaves?date", stringContent );
+                    response = await client.PostAsync("Leaves", stringContent );
 
                     if (response.IsSuccessStatusCode)
                     {
-                        ViewBag.message = "Leave applying successful";
+                        
+                        message = "Leave applying successful";
+                    }
+                    else
+                    {
+                        message = "Error occured";
                     }
 
                 }
             }
+            ViewBag.Message = message;
             return View();
         }
 
@@ -63,7 +109,7 @@ namespace WebApp_ebuilder.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var response = await client.GetAsync("Leaves");
+                var response = await client.GetAsync("Leaves?EID="+User.EID);
                 if (response.IsSuccessStatusCode)
                 {
                     var responseData = response.Content.ReadAsStringAsync().Result;

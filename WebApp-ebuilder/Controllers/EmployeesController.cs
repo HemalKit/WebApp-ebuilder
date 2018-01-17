@@ -9,24 +9,27 @@ using System.Web;
 using Newtonsoft.Json;
 using WebApp_ebuilder.Authorizer;
 using System.Net.Http.Headers;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace WebApp_ebuilder.Controllers
 {
     public class EmployeesController : BaseController
     {
         [HttpGet]
-        
+        [CustomAuthorize(Roles="HR Admin")]
         public ActionResult Register()
         {
+            ViewBag.Message = null;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         
-        public async System.Threading.Tasks.Task<ActionResult> Register([Bind(Exclude = "emailVerified,activationCode")] employee newEmployee)
+        public async System.Threading.Tasks.Task<ActionResult> Register(employeeRegister newEmployeeForm)
         {
-            string message = "";
+            string message = null;
             if (ModelState.IsValid)
             {
                 using (HttpClient client = new HttpClient())
@@ -36,7 +39,7 @@ namespace WebApp_ebuilder.Controllers
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
                     // check whether an employee already exists with the given ID
-                    var response = await client.GetAsync("Employees/" + newEmployee.EID);
+                    var response = await client.GetAsync("Employees/" + newEmployeeForm.EID);
 
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
@@ -44,10 +47,25 @@ namespace WebApp_ebuilder.Controllers
                     }
                     else
                     {
-                        message = "The employee was not found with EID";
+                        employee newEmployee = new employee();
+
+                        newEmployee.EID = newEmployeeForm.EID;
+                        newEmployee.password = newEmployeeForm.password;
+                        newEmployee.email = newEmployeeForm.email;
+                        newEmployee.dob = newEmployeeForm.dob;
+                        newEmployee.fName = newEmployeeForm.fName;
+                        newEmployee.lName = newEmployeeForm.lName;
+                        newEmployee.gender = newEmployeeForm.gender;
+                        newEmployee.homeNo = newEmployeeForm.homeNo;
+                        newEmployee.street = newEmployeeForm.street;
+                        newEmployee.city = newEmployeeForm.city;
+                        newEmployee.jobCategory = newEmployeeForm.jobCategory;
+
+                        
                         newEmployee.activationCode = Guid.NewGuid().ToString();
                         newEmployee.emailVerified = false;
 
+                       
                         var serializer = new JavaScriptSerializer();
                         var json = serializer.Serialize(newEmployee);
                         var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -70,8 +88,8 @@ namespace WebApp_ebuilder.Controllers
             {
                 message = "Invalid request";
             }
-            ViewBag.message = message;
-            return View(newEmployee);
+            ViewBag.Message = message;
+            return View(newEmployeeForm);
         }
 
 
@@ -174,15 +192,35 @@ namespace WebApp_ebuilder.Controllers
         }
 
 
-        [Authorize]
+        [CustomAuthorize(Roles = "HR Admin,Managerial")]
         [HttpGet]
-        public ActionResult ViewProfile()
+        public async System.Threading.Tasks.Task<ActionResult> ViewEmployees()
         {
-            return View();
+            using (HttpClient client = new HttpClient())
+            {
+                //var message = "";
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+
+                var response = await client.GetAsync("Employees");
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseData = response.Content.ReadAsStringAsync().Result;
+                    var employeeData = JsonConvert.DeserializeObject<List<employee>>(responseData);
+                    return View(employeeData);
+                    
+                }
+                else
+                {
+                    return View();
+                }
+            }
         }
 
-       /* [HttpDelete]
-        public async System.Threading.Tasks.Task<EmptyResult> RemoveAsync(string id)
+
+        [CustomAuthorize(Roles = "HR Admin")]
+        public async System.Threading.Tasks.Task<ActionResult> Delete(string EID)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -190,13 +228,91 @@ namespace WebApp_ebuilder.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var response = await client.DeleteAsync("Employees/" + id);
-                if( response.StatusCode == System.Net.HttpStatusCode.OK)
+                var response = await client.DeleteAsync("");
+                response = await client.DeleteAsync("Employees/"+EID);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    return EmptyResult;
+                    ViewBag.Message = "Sucessfully deleted";
+                }
+                else
+                {
+                    ViewBag.Message = "Unsuccessful";
                 }
 
+                return View();
             }
-        }*/
+
+        }
+
+        [CustomAuthorize]
+        [HttpGet]
+        public ActionResult ViewProfile()
+        {
+            return View();
+        }
+
+        [CustomAuthorize(Roles = "HR Admin")]
+        [HttpGet]
+        public async System.Threading.Tasks.Task<ActionResult> Edit(string EID)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+
+                var response = await client.GetAsync("Employees/"+ EID);
+                var responseData = response.Content.ReadAsStringAsync().Result;
+                var employeeData = JsonConvert.DeserializeObject<employee>(responseData);
+                return View(employeeData);
+            }           
+        }
+
+        [HttpPost]
+        public async System.Threading.Tasks.Task<ActionResult> Edit(employee newEmployeeData)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+
+                var serializer = new JavaScriptSerializer();
+                var json = serializer.Serialize(newEmployeeData);
+                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PutAsync("Employees/"+newEmployeeData.EID, stringContent);
+
+                if(response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    ViewBag.Message = "Successfully updated";
+                }
+
+                else
+                {
+                    ViewBag.Message = "Error occured";
+                }
+                return View();
+            }
+
+        }
+
+        /* [HttpDelete]
+         public async System.Threading.Tasks.Task<EmptyResult> RemoveAsync(string id)
+         {
+             using (HttpClient client = new HttpClient())
+             {
+                 client.BaseAddress = new Uri(BaseUrl);
+                 client.DefaultRequestHeaders.Accept.Clear();
+                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+
+                 var response = await client.DeleteAsync("Employees/" + id);
+                 if( response.StatusCode == System.Net.HttpStatusCode.OK)
+                 {
+                     return EmptyResult;
+                 }
+
+             }
+         }*/
     }
 }
