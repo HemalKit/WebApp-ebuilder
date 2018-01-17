@@ -143,6 +143,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Authorizer\CustomAuthorizeAttribute.cs" />
     <Compile Include="Authorizer\CustomPrincipal.cs" />
+    <Compile Include="Controllers\ApprovalsController.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DutyLeavesController.cs" />
@@ -225,6 +226,8 @@
     <Content Include="Views\Employees\Delete.cshtml" />
     <Content Include="Views\LeaveTypes\Edit.cshtml" />
     <Content Include="Views\Employees\Edit.cshtml" />
+    <Content Include="Views\Approvals\ViewPendingApprovals.cshtml" />
+    <Content Include="Views\Approvals\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
