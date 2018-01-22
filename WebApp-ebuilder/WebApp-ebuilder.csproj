@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus">
+      <HintPath>F:\Downloads\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -148,6 +151,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DutyLeavesController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
+    <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LeavesController.cs" />
     <Compile Include="Controllers\LeaveTypesController.cs" />
@@ -157,6 +161,7 @@
     </Compile>
     <Compile Include="Models\approval.cs" />
     <Compile Include="Models\attendance.cs" />
+    <Compile Include="Models\attendanceView.cs" />
     <Compile Include="Models\customPrincipalSerializeModel.cs" />
     <Compile Include="Models\duty_leave.cs" />
     <Compile Include="Models\employee.cs" />
@@ -179,11 +184,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Rotativa\wkhtmltoimage.exe" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -228,6 +238,9 @@
     <Content Include="Views\Employees\Edit.cshtml" />
     <Content Include="Views\Approvals\ViewPendingApprovals.cshtml" />
     <Content Include="Views\Approvals\Edit.cshtml" />
+    <Content Include="Views\Attendance\AddAttendance.cshtml" />
+    <Content Include="Views\Files\Index.cshtml" />
+    <Content Include="Views\Files\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

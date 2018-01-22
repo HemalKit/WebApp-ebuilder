@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using WebApp_ebuilder.Authorizer;
 using WebApp_ebuilder.Models;
 
@@ -44,6 +46,36 @@ namespace WebApp_ebuilder.Controllers
         public ActionResult ApplyDutyLeave()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async System.Threading.Tasks.Task<ActionResult> ApplyDutyLeave(duty_leave newDutyLeave)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                newDutyLeave.EID = User.EID;
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
+
+                //var serializer = new JavaScriptSerializer();
+                var json = JsonConvert.SerializeObject(newDutyLeave);
+                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("DutyLeaves", stringContent);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    ViewBag.Message = "Created";
+
+                }
+                else
+                {
+                    ViewBag.Message = "Some Error" + response.Content.ReadAsStringAsync().Result; ;
+                }
+            }
+            return View();
+
         }
 
 

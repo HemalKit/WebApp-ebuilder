@@ -42,9 +42,14 @@ namespace WebApp_ebuilder
                 newUser.Role = serializeModel.Role;
 
                 HttpContext.Current.User = newUser;
-            }
-            
+            }            
+        }
 
+        protected void Application_BeginRequest()
+        {
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
+            Response.Cache.SetNoStore();
         }
     }
 }

@@ -25,6 +25,8 @@ namespace WebApp_ebuilder.Models
         public Nullable<System.TimeSpan> duration { get; set; }
         public string EID { get; set; }
         public string location { get; set; }
+        public string purpose { get; set; }
+
 
         public virtual employee employee { get; set; }
         internal virtual ICollection<tracking> trackings { get; set; }
