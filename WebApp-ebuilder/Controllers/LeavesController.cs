@@ -101,7 +101,14 @@ namespace WebApp_ebuilder.Controllers
             return View();
         }
 
-        public async System.Threading.Tasks.Task<ActionResult> ViewLeaves()
+        [HttpGet]
+        public ActionResult ViewLeaves()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async System.Threading.Tasks.Task<ActionResult> ViewLeaves(leaveParameter parameter)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -120,6 +127,9 @@ namespace WebApp_ebuilder.Controllers
             }
 
         }
+
+
+
 
     }
 }

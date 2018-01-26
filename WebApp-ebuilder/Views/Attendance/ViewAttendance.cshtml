@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebApp_ebuilder.Models.attendance>
+﻿@model IEnumerable<WebApp_ebuilder.Models.attendanceWithWorkingHours>
 
 @{
     ViewBag.Title = "ViewAttendance";
@@ -6,6 +6,9 @@
 
 <h2>ViewAttendance</h2>
 
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
 <table class="table">
     <tr>
         <th>
@@ -22,6 +25,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.EID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.workingHours)
         </th>
         <th></th>
     </tr>
@@ -44,6 +50,9 @@
             @Html.DisplayFor(modelItem => item.EID)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.workingHours)
+        </td>
+        <td>
             @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
             @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
             @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
@@ -52,3 +61,9 @@
 }
 
 </table>
+
+
+<div>
+    <img src="Chart.cshtml" alt="Chart"/>
+</div>
+

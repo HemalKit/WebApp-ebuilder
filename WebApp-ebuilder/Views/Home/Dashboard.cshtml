@@ -11,9 +11,9 @@
     <ul class="nav navbar-nav">
         <li>@Html.ActionLink("Apply Leave", "ApplyLeave", "Leaves")</li>
         <li>@Html.ActionLink("Apply Duty Leave", "ApplyDutyLeave", "DutyLeaves")</li>
-        <li>@Html.ActionLink("View Attendance", "ViewAttendance", "Attendance")</li>
+        <li>@Html.ActionLink("View Attendance", "ViewAttendance", "Attendance",new { EID = User.EID },new { @class = "ui-btn-right" })</li>
         <li>@Html.ActionLink("View Leaves", "ViewLeaves", "Leaves")</li>
-
+        
     </ul>
 </div>
 

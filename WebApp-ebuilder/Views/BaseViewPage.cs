@@ -15,8 +15,6 @@ namespace WebApp_ebuilder.Views
             {
                 get { return base.User as CustomPrincipal; }
             }
-
-
         }
 
         public abstract class BaseViewPage<TModel> : WebViewPage<TModel>
@@ -25,8 +23,6 @@ namespace WebApp_ebuilder.Views
             {
                 get { return base.User as CustomPrincipal; }
             }
-
-
         }
     
 }
