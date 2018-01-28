@@ -26,7 +26,7 @@ namespace WebApp_ebuilder.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        
+        [CustomAuthorize(Roles ="HR Admin")]
         public async System.Threading.Tasks.Task<ActionResult> Register(employeeRegister newEmployeeForm)
         {
             string message = null;
@@ -242,12 +242,6 @@ namespace WebApp_ebuilder.Controllers
 
         }
 
-        [CustomAuthorize]
-        [HttpGet]
-        public ActionResult ViewProfile()
-        {
-            return View();
-        }
 
         [CustomAuthorize(Roles = "HR Admin")]
         [HttpGet]
@@ -267,6 +261,7 @@ namespace WebApp_ebuilder.Controllers
         }
 
         [HttpPost]
+        [CustomAuthorize]
         public async System.Threading.Tasks.Task<ActionResult> Edit(employee newEmployeeData)
         {
             using (HttpClient client = new HttpClient())
@@ -294,6 +289,53 @@ namespace WebApp_ebuilder.Controllers
             }
 
         }
+
+        [HttpGet]
+        [CustomAuthorize]
+        public ActionResult Settings()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [CustomAuthorize]
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [CustomAuthorize]
+        public ActionResult ChangePassword(changePasswordCredentials credentials)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [CustomAuthorize]
+        public async System.Threading.Tasks.Task<ActionResult> ViewProfile()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+
+                var response = await client.GetAsync("Employees/" + User.EID);
+                var responseData = response.Content.ReadAsStringAsync().Result;
+                var employeeData = JsonConvert.DeserializeObject<employee>(responseData);
+                return View(employeeData);
+            }
+        }
+
+
+        [HttpGet]
+        [CustomAuthorize(Roles ="Managerial,HR Admin")]
+        public ActionResult Manage()
+        {
+            return View();
+        }
+
 
         /* [HttpDelete]
          public async System.Threading.Tasks.Task<EmptyResult> RemoveAsync(string id)

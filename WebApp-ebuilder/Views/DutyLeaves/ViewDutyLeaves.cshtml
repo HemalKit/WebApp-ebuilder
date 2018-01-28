@@ -4,11 +4,7 @@
     ViewBag.Title = "ViewDutyLeaves";
 }
 
-<h2>ViewDutyLeaves</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -35,6 +31,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            
             @Html.DisplayFor(modelItem => item.DLID)
         </td>
         <td>
@@ -53,6 +50,8 @@
             @Html.DisplayFor(modelItem => item.location)
         </td>
         <td>
+            @Html.ActionLink("Track Details", "TrackLocation", new { dlid = item.DLID })
+
             @if (DateTime.Compare(item.date, DateTime.Today) >= 0)
             {
                 @Html.ActionLink("Edit ", "Edit", new { /* id=item.PrimaryKey */ })
@@ -61,7 +60,7 @@
 
             }
 
-               @Html.ActionLink("Track Details", "TrackLocation", new { dlid = item.DLID })
+              
            
 
         </td>

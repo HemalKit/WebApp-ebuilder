@@ -4,10 +4,9 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Add New", "Create")
 </p>
 <table class="table">
     <tr>
@@ -36,8 +35,8 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { jobCategory = item.jobCategory, leaveCategory = item.leaveCategory }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            
+            @Html.ActionLink("Delete", "Delete", new { jobCategory = item.jobCategory, leaveCategory = item.leaveCategory })
             
         </td>
     </tr>

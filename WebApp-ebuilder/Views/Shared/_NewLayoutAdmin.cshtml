@@ -102,6 +102,22 @@
                     </ul>
                 </li>
 
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Leave_Types">
+                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseLeave_Types" data-parent="#exampleAccordion">
+                        <i class="fa fa-fw fa-calendar-minus-o"></i>
+                        <span class="nav-link-text">Leave Types</span>
+                    </a>
+                    <ul class="sidenav-second-level collapse" id="collapseLeave_Types">
+                        <li>
+                            <a href="@Url.Action("Index","LeaveTypes")">View Leave Types</a>
+                        </li>
+
+                        <li>
+                            <a href="@Url.Action("Create","LeaveTypes")">Add a Leave Type</a>
+                        </li>
+                    </ul>
+                </li>
+
 
 
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
@@ -152,7 +168,7 @@
     <div class="content-wrapper">
         <div class="container-fluid">
             <!-- Breadcrumbs-->
-            
+
             <div class="row">
                 <div class="container body-content">
                     @RenderBody()

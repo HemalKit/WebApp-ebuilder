@@ -45,34 +45,17 @@ namespace WebApp_ebuilder.Controllers
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                    var response = await client.GetAsync("Leaves?EID==" +User.EID + "&leaveCategory=" + leaveForm.leaveCategory);
+                    var response = await client.GetAsync("Leaves/GetAvailable?EID=" +User.EID);
 
                     var responseData = response.Content.ReadAsStringAsync().Result;
-                    var leavesTaken = JsonConvert.DeserializeObject<List<leav>>(responseData);
+                    var leavesAvailable = JsonConvert.DeserializeObject<List<leave_type>>(responseData);
 
-                    response = await client.GetAsync("LeaveTypes?leaveCategory=" + leaveForm.leaveCategory + "&jobCategory="+User.Role );
-                    responseData = response.Content.ReadAsStringAsync().Result;
-                    //ViewBag.Message = responseData.ToString();
-                    //return View();
-                    var leaveTypeDetails = JsonConvert.DeserializeObject<List<leave_type>>(responseData).FirstOrDefault();
-                    
-
-                    int leaveCount = 0;
-
-                    foreach (leav leave in leavesTaken)
-                    {
-                        if(leave.date.Year == leaveForm.date.Year)
-                        {
-                            leaveCount++;
-                        }
-                    }
-                    if(leaveCount >= leaveTypeDetails.maxAllowed)
+                    if (leavesAvailable.FirstOrDefault(lt => lt.leaveCategory == leaveForm.leaveCategory).maxAllowed <= 0)
                     {
                         message = "All leaves for this category are already taken";
                         ViewBag.Message = message;
                         return View();
-                    }
-
+                    }                    
                     leav newLeave = new leav();
                     newLeave.EID = User.EID;
                     newLeave.date = leaveForm.date;

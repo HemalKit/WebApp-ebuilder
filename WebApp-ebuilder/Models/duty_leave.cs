@@ -11,6 +11,7 @@ namespace WebApp_ebuilder.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public partial class duty_leave
     {
@@ -19,12 +20,23 @@ namespace WebApp_ebuilder.Models
             this.trackings = new HashSet<tracking>();
         }
 
-        public int DLID { get; set; }
+        public int DLID { get; set; }  
+        
+        [DataType(DataType.Date)]
+        [Required(ErrorMessage ="Required")]
         public System.DateTime date { get; set; }
+
+        [DataType(DataType.Time)]
+        [Required(ErrorMessage = "Required")]
         public System.TimeSpan appointmentTime { get; set; }
         public string EID { get; set; }
+
+        [Required(ErrorMessage ="Required")]
         public string location { get; set; }
         public string purpose { get; set; }
+
+        [DataType(DataType.Time)]
+        [Required(ErrorMessage = "Required")]
         public System.TimeSpan endTime { get; set; }
 
 

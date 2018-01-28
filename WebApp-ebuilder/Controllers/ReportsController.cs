@@ -19,7 +19,6 @@ namespace WebApp_ebuilder.Controllers
             return View();
         }
 
-
         [HttpGet]
         public ActionResult LeaveReports()
         {
