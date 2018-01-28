@@ -53,6 +53,7 @@ namespace WebApp_ebuilder.Controllers
                 var responseData = response.Content.ReadAsStringAsync().Result;
                 var allLeaves = JsonConvert.DeserializeObject<allLeaveCount>(responseData);
 
+
                 return View();
             }
         }

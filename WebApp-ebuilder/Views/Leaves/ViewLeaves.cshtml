@@ -1,53 +1,46 @@
-﻿@model WebApp_ebuilder.Models.leaveParameter
+﻿
 
-@{
-    ViewBag.Title = "ViewLeaves";
-    Layout = "~/Views/Shared/_NewLayout.cshtml";
-}
-
-<h2>ViewLeaves</h2>
-
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>leaveParameter</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="col-lg-12">
+    <div class="row">
         <div class="form-group">
-            @Html.LabelFor(model => model.leaveCategory, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.leaveCategory, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.leaveCategory, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        
-        <div class="form-group">
-            @Html.LabelFor(model => model.startDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.startDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.startDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.endDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.endDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.endDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+            <label>Leaves Taken</label>
+            <canvas id="DonutChartTaken" width="600" height="500"></canvas>
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+
+<div class="col-lg-12">
+    <div class="row">
+        <div class="form-group">
+            <label>Leaves Left</label>
+            <canvas id="DonutChartLeft" width="600" height="500"></canvas>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/Chart.js"></script>
+    <script src="~/Scripts/Common.js"></script>
+    <script>
+        //----Donut Chart---------
+        var c = document.getElementById("DonutChartTaken");
+        debugger
+        var ctx = c.getContext("2d");
+        var tData = $.getValues("/Leaves/Leavestaken");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: tData,
+        });
+
+
+
+        var c = document.getElementById("DonutChartLeft");
+        debugger
+        var ctx = c.getContext("2d");
+        var tData = $.getValues("/Leaves/Leavesleft");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: tData,
+        });
+    </script>
+}

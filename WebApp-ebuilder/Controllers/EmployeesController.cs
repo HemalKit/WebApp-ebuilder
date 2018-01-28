@@ -60,11 +60,9 @@ namespace WebApp_ebuilder.Controllers
                         newEmployee.street = newEmployeeForm.street;
                         newEmployee.city = newEmployeeForm.city;
                         newEmployee.jobCategory = newEmployeeForm.jobCategory;
-
                         
                         newEmployee.activationCode = Guid.NewGuid().ToString();
                         newEmployee.emailVerified = false;
-
                        
                         var serializer = new JavaScriptSerializer();
                         var json = serializer.Serialize(newEmployee);

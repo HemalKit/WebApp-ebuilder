@@ -11,7 +11,7 @@
     <!-- Bootstrap core CSS-->
     @Styles.Render("~/Content/vendor/bootstrap/css/bootstrap.min.css")
     <!-- Custom fonts for this template-->
-    @Styles.Render("~/Content/vendor/font-awesome/css/font-awesome.min.css")    
+    @Styles.Render("~/Content/vendor/font-awesome/css/font-awesome.min.css")
     <!-- Custom styles for this template-->
     @Styles.Render("/Content/css/sb-admin.css")
 
@@ -38,7 +38,7 @@
                         <span class="nav-link-text">My Profile</span>
                     </a>
                 </li>
-                
+
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Leaves">
                     <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseLeaves" data-parent="#exampleAccordion">
                         <i class="fa fa-fw fa-calendar-minus-o"></i>
@@ -82,12 +82,12 @@
                         </li>
 
                         <li>
-                            <a href="@Url.Action("ViewAttendanceChart","Attendance")">View Attendance As Charts</a>
+                            <a href="@Url.Action("ViewAttendanceAsChart","Attendance")">View Attendance As Charts</a>
                         </li>
                     </ul>
                 </li>
 
-                
+
 
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Settings">
                     <a class="nav-link" href="@Url.Action("Settings","Employees")">
@@ -96,8 +96,8 @@
                     </a>
                 </li>
 
-                
-                
+
+
             </ul>
             <ul class="navbar-nav sidenav-toggler">
                 <li class="nav-item">
@@ -120,12 +120,12 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="messagesDropdown">
                         <h6 class="dropdown-header">New Messages:</h6>
-                        
+
                         <a class="dropdown-item small" href="#">View all messages</a>
                     </div>
                 </li>
-                
-                
+
+
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
                         <i class="fa fa-fw fa-sign-out"></i>Logout
@@ -137,7 +137,11 @@
     <div class="content-wrapper">
         <div class="container-fluid">
             <!-- Breadcrumbs-->
-            
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    @Html.ActionLink("DashBoard", "Dashboard", "Home", null, null)
+                </li>
+            </ol>
             <div class="row">
                 <div class="container body-content">
                     @RenderBody()
@@ -150,7 +154,7 @@
         <footer class="sticky-footer">
             <div class="container">
                 <div class="text-center">
-                   
+                    <small>Copyright © Your Website 2018</small>
                 </div>
             </div>
         </footer>
@@ -171,8 +175,8 @@
                     <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        @Html.ActionLink("Logout","Logout","Employees",null,new { @class = "btn btn-primary" })
-                        
+                        @Html.ActionLink("Logout", "Logout", "Employees", null, new { @class = "btn btn-primary" })
+
                         <!--<a class="btn btn-primary" href="login.html">Logout</a>-->
                     </div>
                 </div>
@@ -191,13 +195,9 @@
 
         @Scripts.Render("~/Scripts/Chart.min.js")
 
-        @Scripts.Render("~/Scripts/jquery-2.2.3.min.js")
-
-        @Scripts.Render("~/Scripts/bootstrap.min.js")
-
         @RenderSection("scripts", required: false)
 
-        
+
         <!-- Custom scripts for all pages-->
     </div>
 </body>

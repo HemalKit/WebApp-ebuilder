@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Web;
-using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using WebApp_ebuilder.Models;
@@ -30,7 +29,7 @@ namespace WebApp_ebuilder.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var response = await client.GetAsync("Attendance?EID=" + EID);
+                var response = await client.GetAsync("Attendance?EID=" + User.EID);
                 if (response.IsSuccessStatusCode)
                 {
                     var responseData = response.Content.ReadAsStringAsync().Result;
@@ -42,7 +41,12 @@ namespace WebApp_ebuilder.Controllers
         }
 
         
-        public async System.Threading.Tasks.Task<ActionResult> ViewAttendanceAsChart(string EID)
+        public ActionResult ViewAttendanceChart()
+        {
+            return View();
+        }
+        
+        public async System.Threading.Tasks.Task<JsonResult> ViewAttendanceAsChart(string EID )
         {
             using (HttpClient client = new HttpClient())
             {
@@ -50,19 +54,35 @@ namespace WebApp_ebuilder.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var response = await client.GetAsync("Attendance?EID=" + EID);
+                var response = await client.GetAsync("Attendance?EID=" + User.EID);
                 var responseData = response.Content.ReadAsStringAsync().Result;
                 List<attendanceWithWorkingHours> attendance = JsonConvert.DeserializeObject<List<attendanceWithWorkingHours>>(responseData);
 
-                ArrayList xValue = new ArrayList();
-                ArrayList yValue = new ArrayList();
-                attendance.ForEach(a => xValue.Add(a.date));
-                attendance.ForEach(a => yValue.Add(a.workingHours));
+                List<string> xValue = new List<string>();
+                List<int> yValue = new List<int>();
+                attendance.ForEach(a => xValue.Add(a.date.ToString()));
+                attendance.ForEach(a => yValue.Add((int)a.workingHours.TotalHours));
 
-                new Chart(width: 600, height: 400, theme: ChartTheme.Green).AddTitle("Working Hours")
-                    .AddSeries("Default", chartType: "Column", xValue: xValue, yValues: yValue).Write("bmp");
-                return null;
-                 
+                List<string> bgColors = new List<string>();
+                int bgColorBase = 0x000001;
+                xValue.ForEach(x => bgColors.Add("#" + (bgColorBase +=0xA ).ToString()));
+
+
+                Chart _chart = new Chart();
+                _chart.labels = xValue.ToArray();
+                _chart.datasets = new List<Datasets>();
+                List<Datasets> _dataSet = new List<Datasets>();
+                _dataSet.Add(new Datasets()
+                {
+                    label = "Current Year",
+                    data = yValue.ToArray(),
+                    backgroundColor =bgColors.ToArray(),
+                    borderColor = bgColors.ToArray(),
+                    borderWidth = "1"
+                });
+                _chart.datasets = _dataSet;
+                return Json(_chart, JsonRequestBehavior.AllowGet);
+                                 
             }
         }
 
@@ -120,10 +140,10 @@ namespace WebApp_ebuilder.Controllers
 
         public ActionResult Chart()
         {
-            var x = new List<int>();
-            x.Add(1);
-            x.Add(2);
-            x.Add(3);
+            var x = new List<string>();
+            x.Add("dty");
+            x.Add("ytr");
+            x.Add("tug");
 
             var y = new List<int>();
             y.Add(14);

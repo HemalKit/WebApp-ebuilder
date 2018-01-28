@@ -165,6 +165,7 @@
     <Compile Include="Models\attendance.cs" />
     <Compile Include="Models\attendanceView.cs" />
     <Compile Include="Models\attendanceWithWorkingHours.cs" />
+    <Compile Include="Models\Chart.cs" />
     <Compile Include="Models\count.cs" />
     <Compile Include="Models\customPrincipalSerializeModel.cs" />
     <Compile Include="Models\duty_leave.cs" />
@@ -277,6 +278,7 @@
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Chart.min.js" />
+    <Content Include="Scripts\Common.js" />
     <Content Include="Scripts\globalize.js" />
     <Content Include="Scripts\globalize\currency.js" />
     <Content Include="Scripts\globalize\date.js" />
@@ -348,6 +350,9 @@
     <Content Include="Views\Reports\AllLeaveReports.cshtml" />
     <Content Include="Views\Reports\LeaveReportsByTypes.cshtml" />
     <Content Include="Views\Shared\_NewLayout.cshtml" />
+    <Content Include="Views\Leaves\ViewLeaveChart.cshtml" />
+    <Content Include="Views\Shared\_NewLayoutManagerial.cshtml" />
+    <Content Include="Views\Attendance\ViewAttendanceChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
