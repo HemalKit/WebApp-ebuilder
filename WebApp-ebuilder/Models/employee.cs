@@ -11,6 +11,7 @@ namespace WebApp_ebuilder.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public partial class employee
     {
@@ -28,16 +29,34 @@ namespace WebApp_ebuilder.Models
 
         public string EID { get; set; }
         public string password { get; set; }
+
+        [Display(Name ="Email")]
         public string email { get; set; }
         public Nullable<bool> emailVerified { get; set; }
         public string activationCode { get; set; }
+
+        [Display(Name ="Date of Birth")]
         public System.DateTime dob { get; set; }
+
+        [Display(Name ="First Name")]
         public string fName { get; set; }
+
+        [Display(Name ="Last Name")]
         public string lName { get; set; }
+
+        [Display(Name ="Gender")]
         public string gender { get; set; }
+
+        [Display(Name ="Home No.")]
         public string homeNo { get; set; }
+
+        [Display(Name ="Street")]
         public string street { get; set; }
+
+        [Display(Name ="City")]
         public string city { get; set; }
+
+        [Display(Name ="Job Category")]
         public string jobCategory { get; set; }
 
         internal virtual ICollection<attendance> attendances { get; set; }

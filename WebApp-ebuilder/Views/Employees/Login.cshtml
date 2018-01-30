@@ -26,7 +26,7 @@
                     @using (Html.BeginForm())
                 {
                         @Html.AntiForgeryToken()
-
+                    
                         
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="form-group">
@@ -69,11 +69,12 @@
 
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-md-10">
-                                    <input type="submit" value="Forgot Password" class="btn btn-primary btn-block" />
+                                    <button onclick="location.href='@Url.Action("ForgotPassword")';return false;" class="btn btn-primary btn-block" >
+                                        Forgot Password
+                                    </button>
                                 </div>
                             </div>
-
-                    }
+                 }
 
                 </div>
              </div>

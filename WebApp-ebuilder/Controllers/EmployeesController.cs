@@ -336,6 +336,11 @@ namespace WebApp_ebuilder.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
 
         /* [HttpDelete]
          public async System.Threading.Tasks.Task<EmptyResult> RemoveAsync(string id)

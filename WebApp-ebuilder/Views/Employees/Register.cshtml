@@ -4,10 +4,26 @@
     ViewBag.Title = "Register";
 }
 
+@section Scripts{
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+
+  $(document).ready(function() {
+      $("#dob").datepicker({
+          dateFormat:"mm/dd/yy",
+          minDate: "-0M -0D -100Y",
+          maxDate: "+0M +0D -18Y"
+      });
+  });
+    </script>
+}
+
+
 @if (ViewBag.Message!= null)
 {
     <h3>@ViewBag.Message</h3>
-
 }
 
 @using (Html.BeginForm()) 

@@ -138,24 +138,6 @@ namespace WebApp_ebuilder.Controllers
 
         }
 
-        public ActionResult Chart()
-        {
-            var x = new List<string>();
-            x.Add("dty");
-            x.Add("ytr");
-            x.Add("tug");
-
-            var y = new List<int>();
-            y.Add(14);
-            y.Add(25);
-            y.Add(21);
-
-            ViewBag.xValues = x;
-            ViewBag.yValues = y;
-
-            return View();
-        }
-
     }
 
 

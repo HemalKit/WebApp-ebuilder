@@ -16,7 +16,7 @@ namespace WebApp_ebuilder.Controllers
     public class ApprovalsController : BaseController
     {
         // GET: Approvals
-        [CustomAuthorize(Roles = "Managerial, HR Admin")]
+        [CustomAuthorize(Roles = "Managerial,HR Admin")]
         public async System.Threading.Tasks.Task<ActionResult> ViewPendingApprovals()
         {
             using (HttpClient client = new HttpClient())

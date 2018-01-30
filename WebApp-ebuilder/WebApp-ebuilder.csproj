@@ -161,6 +161,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\allLeaveCount.cs" />
+    <Compile Include="Models\appliedLeavesPercentView.cs" />
     <Compile Include="Models\approval.cs" />
     <Compile Include="Models\attendance.cs" />
     <Compile Include="Models\attendanceView.cs" />
@@ -360,6 +361,10 @@
     <Content Include="Views\Shared\_NewLayoutAdmin.cshtml" />
     <Content Include="Views\Employees\ViewProfile.cshtml" />
     <Content Include="Views\Employees\Manage.cshtml" />
+    <Content Include="Views\Employees\ForgotPassword.cshtml" />
+    <Content Include="Views\Reports\LeavesAppliedByWeekday.cshtml" />
+    <Content Include="Views\Reports\Help.cshtml" />
+    <Content Include="Views\DutyLeaves\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

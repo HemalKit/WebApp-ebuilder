@@ -10,7 +10,7 @@ using WebApp_ebuilder.Models;
 
 namespace WebApp_ebuilder.Controllers
 {
-    [CustomAuthorize(Roles ="HR Admin,Managerial")]
+    [CustomAuthorize(Roles = "HR Admin,Managerial")]
     public class ReportsController : BaseController
     {
         // GET: Reports
@@ -25,6 +25,7 @@ namespace WebApp_ebuilder.Controllers
             return View();
         }
 
+        //needs edit
         [HttpPost]
         public RedirectToRouteResult LeaveReports(leaveParameter parameter)
         {
@@ -40,6 +41,7 @@ namespace WebApp_ebuilder.Controllers
 
 
         //Get the all taken and available leave counts within a given range for the logged in user
+        //needs edit
         public async System.Threading.Tasks.Task<ActionResult> AllLeaveReports(string startDate, string endDate)
         {
             using (HttpClient client = new HttpClient())
@@ -57,7 +59,7 @@ namespace WebApp_ebuilder.Controllers
             }
         }
 
-
+        //needs edit
         public async System.Threading.Tasks.Task<ActionResult> LeaveReportsByTypes(leaveParameter parameter)
         {
             using (HttpClient client = new HttpClient())
@@ -70,8 +72,37 @@ namespace WebApp_ebuilder.Controllers
                 var responseData = response.Content.ReadAsStringAsync().Result;
                 var leaveCount = JsonConvert.DeserializeObject<count>(responseData);
                 return View();
-                
+
             }
+        }
+
+        
+        public async System.Threading.Tasks.Task<ActionResult> LeavesAppliedByWeekday()
+        {
+            try
+            {
+                appliedLeavesPercentView LeaveCountByWeekDay;
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
+
+                    var response = await client.GetAsync("Leaves/LeavesAppliedWeekly");
+                    var responseData = response.Content.ReadAsStringAsync().Result;
+                    LeaveCountByWeekDay = JsonConvert.DeserializeObject<appliedLeavesPercentView>(responseData);                     
+                }
+                return View(LeaveCountByWeekDay);
+            }
+            catch (Exception)
+            {
+                return View();
+            }
+        }
+
+        public ActionResult Help()
+        {
+            return PartialView();
         }
     }
 }

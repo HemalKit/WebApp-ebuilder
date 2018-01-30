@@ -35,54 +35,63 @@ namespace WebApp_ebuilder.Controllers
         [CustomAuthorize]
         public async System.Threading.Tasks.Task<ActionResult> ApplyLeave(leaveApplyForm leaveForm)
         {
-            var message = "";
-            if (ModelState.IsValid)
+            try
             {
-                
-                using (HttpClient client = new HttpClient())
+                var message = "";
+                if (ModelState.IsValid)
                 {
-                    client.BaseAddress = new Uri(BaseUrl);
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                    var response = await client.GetAsync("Leaves/GetAvailable?EID=" +User.EID);
-
-                    var responseData = response.Content.ReadAsStringAsync().Result;
-                    var leavesAvailable = JsonConvert.DeserializeObject<List<leave_type>>(responseData);
-
-                    if (leavesAvailable.FirstOrDefault(lt => lt.leaveCategory == leaveForm.leaveCategory).maxAllowed <= 0)
+                    using (HttpClient client = new HttpClient())
                     {
-                        message = "All leaves for this category are already taken";
-                        ViewBag.Message = message;
-                        return View();
-                    }                    
-                    leav newLeave = new leav();
-                    newLeave.EID = User.EID;
-                    newLeave.date = leaveForm.date;
-                    newLeave.reason = leaveForm.reason;
-                    newLeave.jobCategory = User.Role;
-                    newLeave.leaveCategory = leaveForm.leaveCategory;
+                        client.BaseAddress = new Uri(BaseUrl);
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                    var serializer = new JavaScriptSerializer();
-                    var json = serializer.Serialize(newLeave);
-                    var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+                        var response = await client.GetAsync("Leaves/GetAvailable?EID=" + User.EID);
 
-                    response = await client.PostAsync("Leaves", stringContent );
+                        var responseData = response.Content.ReadAsStringAsync().Result;
+                        var leavesAvailable = JsonConvert.DeserializeObject<List<leave_type>>(responseData);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        
-                        message = "Leave applying successful";
+                        if (leavesAvailable.FirstOrDefault(lt => lt.leaveCategory == leaveForm.leaveCategory).maxAllowed <= 0)
+                        {
+                            message = "All leaves for this category are already taken";
+                            ViewBag.Message = message;
+                            return View();
+                        }
+                        leav newLeave = new leav();
+                        newLeave.EID = User.EID;
+                        newLeave.date = leaveForm.date;
+                        newLeave.reason = leaveForm.reason;
+                        newLeave.jobCategory = User.Role;
+                        newLeave.leaveCategory = leaveForm.leaveCategory;
+
+                        var serializer = new JavaScriptSerializer();
+                        var json = serializer.Serialize(newLeave);
+                        var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                        response = await client.PostAsync("Leaves", stringContent);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+
+                            message = "Leave applying successful";
+                        }
+                        else
+                        {
+                            message = "Error occured";
+                        }
+
                     }
-                    else
-                    {
-                        message = "Error occured";
-                    }
-
                 }
+                ViewBag.Message = message;
+                return View();
             }
-            ViewBag.Message = message;
-            return View();
+            catch (Exception)
+            {
+                ViewBag.Message = "Error Occured";
+                return View();
+            }
+            
         }
 
         [HttpGet]
@@ -106,6 +115,7 @@ namespace WebApp_ebuilder.Controllers
                 {
                     var responseData = response.Content.ReadAsStringAsync().Result;
                     var leaveData = JsonConvert.DeserializeObject<allLeaveCount>(responseData);
+                    
 
                     List<string> labels = new List<string>();
                     leaveData.taken.ForEach(c => labels.Add(c.name));
