@@ -63,7 +63,7 @@ namespace WebApp_ebuilder.Controllers
                     var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
                     var response = await client.PostAsync("LeaveTypes", stringContent);
-                    if (response.StatusCode == System.Net.HttpStatusCode.Created)
+                    if (response.IsSuccessStatusCode)
                     {
                         message = "Successfully created";
                     }

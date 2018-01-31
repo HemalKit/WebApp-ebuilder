@@ -7,10 +7,60 @@
 
 <body>
    
-    <button onclick="location.href='@Url.Action("LeavesAppliedByWeekday")';return false;" class="btn btn-primary">
+    <button onclick="levavesAppliedWeekday()" class="btn btn-primary">
         Leaves Applied by Weekday
     </button>
+
+    <button onclick="leaveAppliedMonthly()" class="btn btn-primary">
+        Leaves Applied by Month
+    </button>  
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Leaves Left</label>
+                <canvas id="DonutChart1" width="400" height="400"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Leaves Left</label>
+                <canvas id="DonutChart2" width="400" height="400"></canvas>
+            </div>
+        </div>
+    </div>
     
-    
+
     
 </body>
+
+@section Scripts{
+<script src="~/Scripts/Chart.js"></script>
+<script src="~/Scripts/Common.js"></script>
+<script>
+
+    function levavesAppliedWeekday() {
+        var c = document.getElementById("DonutChart1");
+        debugger
+        var ctx = c.getContext("2d");
+        var tData = $.getValues("/Reports/LeavesAppliedByWeekday");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: tData            
+        });
+    }
+
+    function leaveAppliedMonthly() {
+        var c = document.getElementById("DonutChart2");
+        debugger
+        var ctx = c.getContext("2d");
+        var tData = $.getValues("/Reports/LeavesAppliedByMonth");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: tData
+            
+        });
+    }
+</script>
+    }

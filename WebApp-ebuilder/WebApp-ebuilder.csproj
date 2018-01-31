@@ -160,9 +160,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\allLeaveCount.cs" />
     <Compile Include="Models\appliedLeavesPercentView.cs" />
+    <Compile Include="Models\appliedLeavesPercentViewMonthly.cs" />
     <Compile Include="Models\approval.cs" />
+    <Compile Include="Models\approvalView.cs" />
     <Compile Include="Models\attendance.cs" />
     <Compile Include="Models\attendanceView.cs" />
     <Compile Include="Models\attendanceWithWorkingHours.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Models\employee.cs" />
     <Compile Include="Models\employeeLogin.cs" />
     <Compile Include="Models\employeeRegister.cs" />
+    <Compile Include="Models\forgotPasswordCredential.cs" />
     <Compile Include="Models\leav.cs" />
     <Compile Include="Models\leaveApplyForm.cs" />
     <Compile Include="Models\leaveParameter.cs" />
@@ -277,6 +279,7 @@
     <Content Include="Content\vendor\font-awesome\scss\_variables.scss" />
     <Content Include="Content\vendor\jquery\jquery.min.map" />
     <Content Include="Content\vendor\jquery\jquery.slim.min.map" />
+    <None Include="Properties\PublishProfiles\ebuildertechnocoders - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Chart.min.js" />
@@ -365,6 +368,7 @@
     <Content Include="Views\Reports\LeavesAppliedByWeekday.cshtml" />
     <Content Include="Views\Reports\Help.cshtml" />
     <Content Include="Views\DutyLeaves\Delete.cshtml" />
+    <Content Include="Views\Reports\LeavesAppliedByMonth.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

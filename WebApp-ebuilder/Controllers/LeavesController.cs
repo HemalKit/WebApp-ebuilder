@@ -102,7 +102,7 @@ namespace WebApp_ebuilder.Controllers
         }
 
 
-        public async System.Threading.Tasks.Task<JsonResult> LeavesTaken()
+        public async System.Threading.Tasks.Task<JsonResult> LeavesCount()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -110,110 +110,85 @@ namespace WebApp_ebuilder.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var response = await client.GetAsync("Leaves/LeaveCount?EID=" + User.EID + "&startDate=2017-1-1&endDate=2018-10-10");
+                var response = await client.GetAsync("Leaves/LeaveCount?EID=" + User.EID );
                 if (true)
                 {
                     var responseData = response.Content.ReadAsStringAsync().Result;
-                    var leaveData = JsonConvert.DeserializeObject<allLeaveCount>(responseData);
+                    var leaveData = JsonConvert.DeserializeObject<List<count>>(responseData);
+
+                    var chartList = new List<Chart>();
+                    foreach (var ld in leaveData)
+                    {
+                        Chart _chart = new Chart();
+                        _chart.labels = new string[] { "taken", "left" };
+                        _chart.datasets = new List<Datasets>();
+                        List<Datasets> _dataSet = new List<Datasets>();
+                        _dataSet.Add(new Datasets()
+                        {
+                            label = ld.leaveCategory,
+                            data = new int[] { ld.takenCount, ld.leftCount },
+                            backgroundColor = new string[] { "#00ff00", "#0000FF" },
+                            borderColor = new string[] { "#00ff00", "#0000FF" },
+                            borderWidth = "1"
+                        });
+                        _chart.datasets = _dataSet;
+                        chartList.Add(_chart);
+                    }
                     
-
-                    List<string> labels = new List<string>();
-                    leaveData.taken.ForEach(c => labels.Add(c.name));
-
-                    List<int> takenCount = new List<int>();
-                    List<int> leftCount = new List<int>();
-
-                    leaveData.taken.ForEach(c => takenCount.Add(c.number));
-                    leaveData.left.ForEach(c => leftCount.Add(c.number));
-
-
-
-                    Chart _chart = new Chart();
-                    _chart.labels = labels.ToArray();
-                    _chart.datasets = new List<Datasets>();
-                    List<Datasets> _dataSet = new List<Datasets>();
-                    _dataSet.Add(new Datasets()
-                    {
-                        label = "Current Year",
-                        data = takenCount.ToArray(),
-                        backgroundColor = new string[] { "#00ff00", "#0000FF" },
-                        borderColor = new string[] { "#00ff00", "#0000FF" },
-                        borderWidth = "1"
-                    });
-                    _chart.datasets = _dataSet;
-                    return Json(_chart, JsonRequestBehavior.AllowGet);
-
-
-                    // return View();
+                    return Json(chartList, JsonRequestBehavior.AllowGet);
+                    
                 }
 
             }
         }
 
-        public async System.Threading.Tasks.Task<JsonResult> LeavesLeft()
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(BaseUrl);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
+        //public async System.Threading.Tasks.Task<JsonResult> LeavesLeft()
+        //{
+        //    using (HttpClient client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri(BaseUrl);
+        //        client.DefaultRequestHeaders.Accept.Clear();
+        //        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var response = await client.GetAsync("Leaves/LeaveCount?EID=" + User.EID + "&startDate=2017-1-1&endDate=2018-10-10");
-                if (true)
-                {
-                    var responseData = response.Content.ReadAsStringAsync().Result;
-                    var leaveData = JsonConvert.DeserializeObject<allLeaveCount>(responseData);
+        //        var response = await client.GetAsync("Leaves/LeaveCount?EID=" + User.EID + "&startDate=2017-1-1&endDate=2018-10-10");
+        //        if (true)
+        //        {
+        //            var responseData = response.Content.ReadAsStringAsync().Result;
+        //            var leaveData = JsonConvert.DeserializeObject<allLeaveCount>(responseData);
 
-                    List<string> labels = new List<string>();
-                    leaveData.taken.ForEach(c => labels.Add(c.name));
+        //            List<string> labels = new List<string>();
+        //            leaveData.taken.ForEach(c => labels.Add(c.name));
 
-                    List<int> takenCount = new List<int>();
-                    List<int> leftCount = new List<int>();
+        //            List<int> takenCount = new List<int>();
+        //            List<int> leftCount = new List<int>();
 
-                    leaveData.taken.ForEach(c => takenCount.Add(c.number));
-                    leaveData.left.ForEach(c => leftCount.Add(c.number));
-
-
-
-                    Chart _chart = new Chart();
-                    _chart.labels = labels.ToArray();
-                    _chart.datasets = new List<Datasets>();
-                    List<Datasets> _dataSet = new List<Datasets>();
-                    _dataSet.Add(new Datasets()
-                    {
-                        label = "Current Year",
-                        data = leftCount.ToArray(),
-                        backgroundColor = new string[] { "#0000FF", "#ffff00" },
-                        borderColor = new string[] { "#0000FF", "#ffff00" },
-                        borderWidth = "1"
-                    });
-                    _chart.datasets = _dataSet;
-                    return Json(_chart, JsonRequestBehavior.AllowGet);
+        //            leaveData.taken.ForEach(c => takenCount.Add(c.number));
+        //            leaveData.left.ForEach(c => leftCount.Add(c.number));
 
 
-                    // return View();
-                }
 
-            }
-        }
+        //            Chart _chart = new Chart();
+        //            _chart.labels = labels.ToArray();
+        //            _chart.datasets = new List<Datasets>();
+        //            List<Datasets> _dataSet = new List<Datasets>();
+        //            _dataSet.Add(new Datasets()
+        //            {
+        //                label = "Current Year",
+        //                data = leftCount.ToArray(),
+        //                backgroundColor = new string[] { "#0000FF", "#ffff00" },
+        //                borderColor = new string[] { "#0000FF", "#ffff00" },
+        //                borderWidth = "1"
+        //            });
+        //            _chart.datasets = _dataSet;
+        //            return Json(_chart, JsonRequestBehavior.AllowGet);
 
 
-        public JsonResult LeavesTook()
-        {
-            Chart _chart = new Chart();
-            _chart.labels = new string[] { "January", "February", "March", "April", "May", "June", "July" };
-            _chart.datasets = new List<Datasets>();
-            List<Datasets> _dataSet = new List<Datasets>();
-            _dataSet.Add(new Datasets()
-            {
-                label = "Current Year",
-                data = new int[] { 28, 48, 40, 19, 86, 27, 90 },
-                backgroundColor = new string[] { "#FF0000", "#800000", "#808000", "#008080", "#800080", "#0000FF", "#000080", "#999999", "#E9967A", "#CD5C5C", "#1A5276", "#27AE60" },
-                borderColor = new string[] { "#FF0000", "#800000", "#808000", "#008080", "#800080", "#0000FF", "#000080", "#999999", "#E9967A", "#CD5C5C", "#1A5276", "#27AE60" },
-                borderWidth = "1"
-            });
-            _chart.datasets = _dataSet;
-            return Json(_chart, JsonRequestBehavior.AllowGet);
-        }
+        //            // return View();
+        //        }
+
+        //    }
+        //}
+
+
     }
 }

@@ -36,6 +36,7 @@ namespace WebApp_ebuilder.Models
         public string activationCode { get; set; }
 
         [Display(Name ="Date of Birth")]
+        [DataType(DataType.Date)]
         public System.DateTime dob { get; set; }
 
         [Display(Name ="First Name")]

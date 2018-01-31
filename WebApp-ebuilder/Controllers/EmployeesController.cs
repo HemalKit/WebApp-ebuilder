@@ -17,7 +17,7 @@ namespace WebApp_ebuilder.Controllers
     public class EmployeesController : BaseController
     {
         [HttpGet]
-        [CustomAuthorize(Roles="HR Admin")]
+        [CustomAuthorize(Roles = "HR Admin")]
         public ActionResult Register()
         {
             ViewBag.Message = null;
@@ -26,7 +26,7 @@ namespace WebApp_ebuilder.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(Roles ="HR Admin")]
+        [CustomAuthorize(Roles = "HR Admin")]
         public async System.Threading.Tasks.Task<ActionResult> Register(employeeRegister newEmployeeForm)
         {
             string message = null;
@@ -60,10 +60,10 @@ namespace WebApp_ebuilder.Controllers
                         newEmployee.street = newEmployeeForm.street;
                         newEmployee.city = newEmployeeForm.city;
                         newEmployee.jobCategory = newEmployeeForm.jobCategory;
-                        
+
                         newEmployee.activationCode = Guid.NewGuid().ToString();
                         newEmployee.emailVerified = false;
-                       
+
                         var serializer = new JavaScriptSerializer();
                         var json = serializer.Serialize(newEmployee);
                         var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -100,7 +100,7 @@ namespace WebApp_ebuilder.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async System.Threading.Tasks.Task<ActionResult> Login(employeeLogin login, string ReturnUrl="")
+        public async System.Threading.Tasks.Task<ActionResult> Login(employeeLogin login, string ReturnUrl = "")
         {
             string message = "";
             try
@@ -108,7 +108,7 @@ namespace WebApp_ebuilder.Controllers
                 message = "Entered the try block";
                 using (HttpClient client = new HttpClient())
                 {
-                   
+
                     client.BaseAddress = new Uri(BaseUrl);
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
@@ -121,7 +121,7 @@ namespace WebApp_ebuilder.Controllers
                     var response = await client.PostAsync("Access", stringContent);
                     if (response.IsSuccessStatusCode)
                     {
-                       
+
                         if (response.StatusCode == System.Net.HttpStatusCode.OK)
                         {
                             message = "Success Login";
@@ -174,7 +174,7 @@ namespace WebApp_ebuilder.Controllers
                     return View();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewBag.message = ex;
                 return View();
@@ -207,7 +207,7 @@ namespace WebApp_ebuilder.Controllers
                     var responseData = response.Content.ReadAsStringAsync().Result;
                     var employeeData = JsonConvert.DeserializeObject<List<employee>>(responseData);
                     return View(employeeData);
-                    
+
                 }
                 else
                 {
@@ -227,7 +227,7 @@ namespace WebApp_ebuilder.Controllers
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
 
                 var response = await client.DeleteAsync("");
-                response = await client.DeleteAsync("Employees/"+EID);
+                response = await client.DeleteAsync("Employees/" + EID);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     ViewBag.Message = "Sucessfully deleted";
@@ -253,11 +253,11 @@ namespace WebApp_ebuilder.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var response = await client.GetAsync("Employees/"+ EID);
+                var response = await client.GetAsync("Employees/" + EID);
                 var responseData = response.Content.ReadAsStringAsync().Result;
                 var employeeData = JsonConvert.DeserializeObject<employee>(responseData);
                 return View(employeeData);
-            }           
+            }
         }
 
         [HttpPost]
@@ -274,9 +274,9 @@ namespace WebApp_ebuilder.Controllers
                 var json = serializer.Serialize(newEmployeeData);
                 var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await client.PutAsync("Employees/"+newEmployeeData.EID, stringContent);
+                var response = await client.PutAsync("Employees/" + newEmployeeData.EID, stringContent);
 
-                if(response.StatusCode == System.Net.HttpStatusCode.OK)
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     ViewBag.Message = "Successfully updated";
                 }
@@ -330,7 +330,7 @@ namespace WebApp_ebuilder.Controllers
 
 
         [HttpGet]
-        [CustomAuthorize(Roles ="Managerial,HR Admin")]
+        [CustomAuthorize(Roles = "Managerial,HR Admin")]
         public ActionResult Manage()
         {
             return View();
@@ -341,6 +341,54 @@ namespace WebApp_ebuilder.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public async System.Threading.Tasks.Task<ActionResult> ForgotPassword(string email)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+
+                var serializer = new JavaScriptSerializer();
+                var json = serializer.Serialize(email);
+                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+                var response = await client.PutAsync("Employees/ForgotPassword",stringContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    ViewBag.Message = "Verification code was sent to your email";
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Message = "Error Occured! Check the email you gave";
+                    return View();
+                }
+            }
+        }
+
+
+        public 
+
+        //[HttpGet]
+        //[CustomAuthorize(Roles ="Managerial,HR Admin")]
+        //public ActionResult Details(string EID)
+        //{
+        //    try
+        //    {
+        //        using(HttpClient client = new HttpClient())
+        //        {
+        //            client.BaseAddress = new Uri(BaseUrl);
+        //        }
+        //    }
+
+        //}
+
+
 
         /* [HttpDelete]
          public async System.Threading.Tasks.Task<EmptyResult> RemoveAsync(string id)

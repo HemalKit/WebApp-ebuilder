@@ -54,13 +54,16 @@ namespace WebApp_ebuilder.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var response = await client.GetAsync("Attendance?EID=" + User.EID);
+                var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).Date;
+                var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+                var response = await client.GetAsync("Attendance?EID=" + User.EID+"&startDate="+firstDayOfMonth.ToString()+"&endDate="+lastDayOfMonth.ToString());
                 var responseData = response.Content.ReadAsStringAsync().Result;
                 List<attendanceWithWorkingHours> attendance = JsonConvert.DeserializeObject<List<attendanceWithWorkingHours>>(responseData);
 
                 List<string> xValue = new List<string>();
                 List<int> yValue = new List<int>();
-                attendance.ForEach(a => xValue.Add(a.date.ToString()));
+                attendance.ForEach(a => xValue.Add(a.date.Date.ToString("dd/MM/yyyy")));
                 attendance.ForEach(a => yValue.Add((int)a.workingHours.TotalHours));
 
                 List<string> bgColors = new List<string>();
@@ -74,15 +77,14 @@ namespace WebApp_ebuilder.Controllers
                 List<Datasets> _dataSet = new List<Datasets>();
                 _dataSet.Add(new Datasets()
                 {
-                    label = "Current Year",
+                    label = "This Month",
                     data = yValue.ToArray(),
                     backgroundColor =bgColors.ToArray(),
                     borderColor = bgColors.ToArray(),
                     borderWidth = "1"
                 });
                 _chart.datasets = _dataSet;
-                return Json(_chart, JsonRequestBehavior.AllowGet);
-                                 
+                return Json(_chart, JsonRequestBehavior.AllowGet);                                 
             }
         }
 

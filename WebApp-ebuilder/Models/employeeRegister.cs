@@ -22,6 +22,7 @@ namespace WebApp_ebuilder.Models
         [Display(Name ="Email")]
         public string email { get; set; }
 
+        [Required(AllowEmptyStrings =false, ErrorMessage ="Required")]
         [Display(Name ="Date of Birth")]
         public DateTime dob { get; set; }
 
@@ -35,7 +36,7 @@ namespace WebApp_ebuilder.Models
         [Display(Name = "Last Name")]
         public string lName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Required")]
         [Display(Name = "Gender")]
         public string gender { get; set; }
 

@@ -27,7 +27,7 @@ namespace WebApp_ebuilder.Controllers
 
                 var response = await client.GetAsync("Approvals?ManagerID=" + User.EID + "&status=pending");
                 var responseData = response.Content.ReadAsStringAsync().Result;
-                var approvalData = JsonConvert.DeserializeObject<List<approval>>(responseData);
+                var approvalData = JsonConvert.DeserializeObject<List<approvalView>>(responseData);
 
                 return View(approvalData);
             }           

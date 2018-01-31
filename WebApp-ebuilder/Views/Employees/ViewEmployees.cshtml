@@ -4,11 +4,8 @@
     ViewBag.Title = "ViewEmployees";
 }
 
-<h2>ViewEmployees</h2>
+<h2>All Employees</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -17,9 +14,7 @@
         <th>
             @Html.DisplayNameFor(model => model.email)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.emailVerified)
-        </th>
+        
         <th>
             @Html.DisplayNameFor(model => model.dob)
         </th>
@@ -55,9 +50,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.email)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.emailVerified)
-        </td>
+        
         <td>
             @Html.DisplayFor(modelItem => item.dob)
         </td>
@@ -83,9 +76,19 @@
             @Html.DisplayFor(modelItem => item.jobCategory)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new {EID=item.EID }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new {  id=item.EID })
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+            
+                @{
+                    if (HttpContext.Current.User.IsInRole("HR Admin"))
+                    {
+                        
+                        <br/>
+                        @Html.ActionLink("Edit", "Edit", new { EID = item.EID });
+                        <br/>
+                        @Html.ActionLink("Delete", "Delete", new { id = item.EID });
+                    }
+                }
+            
         </td>
     </tr>
 }
