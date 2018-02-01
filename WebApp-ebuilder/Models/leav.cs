@@ -11,6 +11,7 @@ namespace WebApp_ebuilder.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public partial class leav
     {
@@ -20,9 +21,16 @@ namespace WebApp_ebuilder.Models
         }
 
         public int LID { get; set; }
+
+        [Display(Name ="Date")]
+        
         public System.DateTime date { get; set; }
+
+        [Display(Name ="Reason")]
         public string reason { get; set; }
         public string EID { get; set; }
+
+        [Display(Name ="Leave Category")]
         public string leaveCategory { get; set; }
         public string jobCategory { get; set; }
 

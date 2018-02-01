@@ -75,7 +75,8 @@ namespace WebApp_ebuilder.Controllers
                         if (response.IsSuccessStatusCode)
                         {
 
-                            message = "Leave applying successful";
+                            ViewBag.Message = "Leave applying successful";
+                            return View(new leaveApplyForm());
                         }
                         else
                         {
@@ -98,10 +99,49 @@ namespace WebApp_ebuilder.Controllers
         }
 
         [HttpGet]
-        public ActionResult ViewLeaves()
+        public ActionResult ViewLeavesSummary()
         {
             
             return View();
+        }
+
+
+        [HttpGet]
+        public async System.Threading.Tasks.Task<ActionResult> ViewLeaves(string EID)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    using (HttpClient client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri(BaseUrl);
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
+
+                        var response = await client.GetAsync("Leaves/All?EID=" + EID);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var responseData = response.Content.ReadAsStringAsync().Result;
+                            var leaveList = JsonConvert.DeserializeObject<List<leavWithStatusAndName>>(responseData);
+
+                            return View(leaveList);
+                        }
+                        else
+                        {
+                            ViewBag.Message = "Error Occured";
+                            return View();
+                        }
+                    }
+                }
+                ViewBag.Message = "Error Occured";
+                return View();
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "Error Occured";
+                return View();
+            }
         }
 
 
@@ -144,6 +184,124 @@ namespace WebApp_ebuilder.Controllers
 
             }
         }
+
+
+        [HttpGet]
+        public async System.Threading.Tasks.Task<ActionResult> Edit(int LID)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
+
+                var response = await client.GetAsync("Leaves/" + LID.ToString());
+                var responseData = response.Content.ReadAsStringAsync().Result;
+                var leave = JsonConvert.DeserializeObject<leav>(responseData);
+
+                return View(leave);
+            }
+        }
+
+        [HttpPost]
+        public async System.Threading.Tasks.Task<ActionResult> Edit(leav leave)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
+
+                    var json = JsonConvert.SerializeObject(leave);
+                    var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    var response = await client.PutAsync("Leaves/" + leave.LID.ToString(), stringContent);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ViewBag.Message = "Success";
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Error Occured";
+                        return View();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "Error Occured";
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public async System.Threading.Tasks.Task<ActionResult> Delete(int LID)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
+
+                    var response = await client.GetAsync("Leaves/" + LID.ToString());
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseData = response.Content.ReadAsStringAsync().Result;
+
+                        var leave = JsonConvert.DeserializeObject<leav>(responseData);
+                        return View(leave);
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Error Occured";
+                        return View();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "Error Occured";
+                return View();
+            }            
+        }
+
+        [HttpPost]
+        public async System.Threading.Tasks.Task<ActionResult> Delete(leav leave)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
+
+                    var response = await client.DeleteAsync("Leaves/"+leave.LID);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ViewBag.Message = "Success";
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Error Occured";
+                        return View();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "Errror Occured";
+                return View();
+            }
+        }
+
 
         //public async System.Threading.Tasks.Task<JsonResult> LeavesLeft()
         //{

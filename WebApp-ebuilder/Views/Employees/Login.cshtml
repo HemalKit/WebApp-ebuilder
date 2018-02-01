@@ -15,9 +15,15 @@
 
 </head>
 
-@if (ViewBag.message == null)
-{
+
     <body class="bg-dark">
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-primary text-center" role="alert">
+        @ViewBag.message
+            </div>
+        }
 
         <div class="container">
             <div class="card card-login mx-auto mt-5">
@@ -83,10 +89,7 @@
     </body>
 
 }
-else
-{
-    <div>@ViewBag.message</div>
-}
+
 
 @section Scripts {
     @Scripts.Render("~/Content/vendor/jquery/jquery.min.js")

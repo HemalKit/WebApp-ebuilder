@@ -180,6 +180,7 @@
     <Compile Include="Models\leaveApplyForm.cs" />
     <Compile Include="Models\leaveParameter.cs" />
     <Compile Include="Models\leave_type.cs" />
+    <Compile Include="Models\leavWithStatusAndName.cs" />
     <Compile Include="Models\notification.cs" />
     <Compile Include="Models\task.cs" />
     <Compile Include="Models\tracking.cs" />
@@ -333,7 +334,7 @@
     <Content Include="Views\DutyLeaves\ApplyDutyLeave.cshtml" />
     <Content Include="Views\Shared\_LayoutLoggedIn.cshtml" />
     <Content Include="Views\Attendance\ViewAttendance.cshtml" />
-    <Content Include="Views\Leaves\ViewLeaves.cshtml" />
+    <Content Include="Views\Leaves\ViewLeavesSummary.cshtml" />
     <Content Include="Views\Tasks\ViewTasks.cshtml" />
     <Content Include="Views\Employees\Register.cshtml" />
     <Content Include="Views\Leaves\ApplyLeave.cshtml" />
@@ -369,6 +370,9 @@
     <Content Include="Views\Reports\Help.cshtml" />
     <Content Include="Views\DutyLeaves\Delete.cshtml" />
     <Content Include="Views\Reports\LeavesAppliedByMonth.cshtml" />
+    <Content Include="Views\Leaves\ViewLeaves.cshtml" />
+    <Content Include="Views\Leaves\Edit.cshtml" />
+    <Content Include="Views\Leaves\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

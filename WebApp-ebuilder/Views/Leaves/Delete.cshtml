@@ -1,0 +1,77 @@
+﻿@model WebApp_ebuilder.Models.leav
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+
+@if(ViewBag.Message != null)
+{
+    <div>@ViewBag.Message</div>
+}
+<div>
+   
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.reason)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.reason)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.leaveCategory)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.leaveCategory)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.jobCategory)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.jobCategory)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "ViewLeaves",new { EID = User.EID})
+        </div>
+    }
+</div>

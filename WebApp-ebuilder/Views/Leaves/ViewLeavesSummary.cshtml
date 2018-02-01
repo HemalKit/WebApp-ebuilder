@@ -1,0 +1,60 @@
+﻿
+
+<div class="col-lg-12">
+    <div class="row">
+        <div class="form-group">
+            <label>Leaves Taken</label>
+            <canvas id="DonutChart0" width="600" height="500"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12">
+    <div class="row">
+        <div class="form-group">
+            <label>Leaves Left</label>
+            <canvas id="DonutChart1" width="600" height="500"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12">
+    <div class="row">
+        <div class="form-group">
+            <label>Leaves Left</label>
+            <canvas id="DonutChart2" width="600" height="500"></canvas>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/Chart.js"></script>
+    <script src="~/Scripts/Common.js"></script>
+    <script>
+        //----Donut Chart---------
+        var c = document.getElementById("DonutChart0");
+        debugger
+        var ctx = c.getContext("2d");
+        var tData = $.getValues("/Leaves/LeavesCount");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: tData[0],
+        });
+
+        var c = document.getElementById("DonutChart1");
+        debugger
+        var ctx = c.getContext("2d");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: tData[1],
+        });
+
+        var c = document.getElementById("DonutChart2");
+        debugger
+        var ctx = c.getContext("2d");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: tData[2],
+        });
+    </script>
+}

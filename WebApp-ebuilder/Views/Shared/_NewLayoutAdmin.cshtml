@@ -64,7 +64,10 @@
                             <a href="@Url.Action("ApplyLeave","Leaves")">Apply Leaves</a>
                         </li>
                         <li>
-                            <a href="@Url.Action("ViewLeaves","Leaves")">View Leaves</a>
+                            <a href="@Url.Action("ViewLeavesSummary","Leaves")">View Leaves Summary</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("ViewLeaves","Leaves",new { EID=User.EID})">View Leaves</a>
                         </li>
                     </ul>
                 </li>
