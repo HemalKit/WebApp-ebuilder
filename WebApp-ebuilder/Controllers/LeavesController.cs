@@ -60,13 +60,14 @@ namespace WebApp_ebuilder.Controllers
                         }
                         leav newLeave = new leav();
                         newLeave.EID = User.EID;
-                        newLeave.date = leaveForm.date;
+                        newLeave.date = leaveForm.date.Date;
                         newLeave.reason = leaveForm.reason;
                         newLeave.jobCategory = User.Role;
                         newLeave.leaveCategory = leaveForm.leaveCategory;
 
                         var serializer = new JavaScriptSerializer();
-                        var json = serializer.Serialize(newLeave);
+                        
+                        var json = JsonConvert.SerializeObject(newLeave);
                         var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
                         response = await client.PostAsync("Leaves", stringContent);
@@ -78,7 +79,9 @@ namespace WebApp_ebuilder.Controllers
                         }
                         else
                         {
-                            message = "Error occured";
+                           var content = response.Content.ReadAsStringAsync().Result;
+                            message = JsonConvert.DeserializeObject<string>(content);
+                        
                         }
 
                     }

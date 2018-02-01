@@ -25,7 +25,6 @@ namespace WebApp_ebuilder.Controllers
             try
             {
 
-
                 using (HttpClient client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(BaseUrl);
@@ -38,7 +37,6 @@ namespace WebApp_ebuilder.Controllers
                         var responseData = response.Content.ReadAsStringAsync().Result;
                         List<tracking> trackingData = JsonConvert.DeserializeObject<List<tracking>>(responseData);
                         return View(trackingData);
-
                     }
                     return View();
                 }
@@ -71,7 +69,6 @@ namespace WebApp_ebuilder.Controllers
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                    //var serializer = new JavaScriptSerializer();
                     var json = JsonConvert.SerializeObject(newDutyLeave);
                     var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 

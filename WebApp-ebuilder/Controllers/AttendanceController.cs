@@ -115,13 +115,10 @@ namespace WebApp_ebuilder.Controllers
                     newAttendance.checkIn = TimeSpan.Parse("08:00:00"); 
                     newAttendance.checkOut = attView.checkOut;
                     
-
-                    //var serializer = new JavaScriptSerializer();
                     var json = JsonConvert.SerializeObject(newAttendance);
                     var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("Attendance", stringContent);
                     
-
 
                     //string attstring = att.ToString();
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)

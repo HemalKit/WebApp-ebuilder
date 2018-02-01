@@ -60,8 +60,8 @@ namespace WebApp_ebuilder.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var serializer = new JavaScriptSerializer();
-                var json = serializer.Serialize(newApproval);
+                
+                var json = JsonConvert.SerializeObject(newApproval);
                 var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
                 var response = await client.PutAsync("Approvals/" + newApproval.APID.ToString(), stringContent);

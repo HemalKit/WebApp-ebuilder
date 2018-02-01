@@ -64,8 +64,7 @@ namespace WebApp_ebuilder.Controllers
                         newEmployee.activationCode = Guid.NewGuid().ToString();
                         newEmployee.emailVerified = false;
 
-                        var serializer = new JavaScriptSerializer();
-                        var json = serializer.Serialize(newEmployee);
+                        var json = JsonConvert.SerializeObject(newEmployee);
                         var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
                         response = await client.PostAsync("Employees", stringContent);
@@ -108,15 +107,12 @@ namespace WebApp_ebuilder.Controllers
                 message = "Entered the try block";
                 using (HttpClient client = new HttpClient())
                 {
-
                     client.BaseAddress = new Uri(BaseUrl);
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
 
-                    var serializer = new JavaScriptSerializer();
-                    var json = serializer.Serialize(login);
+                    var json = JsonConvert.SerializeObject(login);
                     var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-
 
                     var response = await client.PostAsync("Access", stringContent);
                     if (response.IsSuccessStatusCode)
@@ -169,7 +165,6 @@ namespace WebApp_ebuilder.Controllers
                     {
                         message = "Wrong Email or Password ";
                     }
-
                     ViewBag.message = message;
                     return View();
                 }
@@ -236,10 +231,8 @@ namespace WebApp_ebuilder.Controllers
                 {
                     ViewBag.Message = "Unsuccessful";
                 }
-
                 return View();
             }
-
         }
 
 
@@ -306,9 +299,32 @@ namespace WebApp_ebuilder.Controllers
 
         [HttpPost]
         [CustomAuthorize]
-        public ActionResult ChangePassword(changePasswordCredentials credentials)
+        public async System.Threading.Tasks.Task<ActionResult> ChangePassword(changePasswordCredentials credentials)
         {
-            return View();
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(BaseUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+                credentials.EID = User.EID;
+
+                var json = JsonConvert.SerializeObject(credentials);
+                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PutAsync("Employees/ChangePassword", stringContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    ViewBag.Message = "Successfully changed the password";
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Message = response.Content.ReadAsStringAsync().Result;
+                    return View();
+                }
+            }
         }
 
         [HttpGet]
@@ -342,37 +358,64 @@ namespace WebApp_ebuilder.Controllers
             return View();
         }
 
+        static int check = 0;
+
         [HttpPost]
-        public async System.Threading.Tasks.Task<ActionResult> ForgotPassword(string email)
+        public async System.Threading.Tasks.Task<ActionResult> ForgotPassword(forgotPasswordCredential credential)
         {
+           
             using (HttpClient client = new HttpClient())
             {
+               
                 client.BaseAddress = new Uri(BaseUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var serializer = new JavaScriptSerializer();
-                var json = serializer.Serialize(email);
-                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-
-
-                var response = await client.PutAsync("Employees/ForgotPassword",stringContent);
-
-                if (response.IsSuccessStatusCode)
+                if (check == 0)
                 {
-                    ViewBag.Message = "Verification code was sent to your email";
-                    return View();
+                    var json = JsonConvert.SerializeObject(credential.email);
+                    var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    var response = await client.PutAsync("Employees/ForgotPassword", stringContent);
+                    
+                    if (response.IsSuccessStatusCode)
+                    {
+                        check = 1;
+                        ViewBag.Message = "Success";
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Error Occured! Check the email you gave";
+                        return View();
+                    }
+                    
                 }
-                else
+                else if(check == 1)
                 {
-                    ViewBag.Message = "Error Occured! Check the email you gave";
-                    return View();
+                    var json = JsonConvert.SerializeObject(credential);
+                    var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PutAsync("Employees/ResetPassword", stringContent);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        check = 0;
+                        ViewBag.Message = "Password Reset Successful";
+                        return View();
+                        
+                    }
+                    else
+                    {
+                        check = 1;
+                        ViewBag.Message = "Error! Seems like incorret verification code";
+                        return View();
+                    }
+
                 }
+                return View();
             }
         }
 
-
-        public 
 
         //[HttpGet]
         //[CustomAuthorize(Roles ="Managerial,HR Admin")]
@@ -387,7 +430,6 @@ namespace WebApp_ebuilder.Controllers
         //    }
 
         //}
-
 
 
         /* [HttpDelete]

@@ -58,8 +58,7 @@ namespace WebApp_ebuilder.Controllers
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                    var serializer = new JavaScriptSerializer();
-                    var json = serializer.Serialize(newLeaveType);
+                    var json = JsonConvert.SerializeObject(newLeaveType);
                     var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
                     var response = await client.PostAsync("LeaveTypes", stringContent);
@@ -97,10 +96,8 @@ namespace WebApp_ebuilder.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var serializer = new JavaScriptSerializer();
-                var json = serializer.Serialize(newLeaveType);
+                var json = JsonConvert.SerializeObject(newLeaveType);
                 var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-
 
                 var response = await client.PutAsync("LeaveTypes?jobCategory=" + newLeaveType.jobCategory + "&leaveCategory=" + newLeaveType.leaveCategory, stringContent);
                 if(response.StatusCode == System.Net.HttpStatusCode.OK)

@@ -43,7 +43,6 @@ namespace WebApp_ebuilder.Controllers
                         var noOfCol = workSheet.Dimension.End.Column;
                         var noOfRow = workSheet.Dimension.End.Row;
 
-
                         for (int rowIterator = 2; rowIterator <= noOfRow; rowIterator++)
                         {
                             var newAttendance = new attendance();
