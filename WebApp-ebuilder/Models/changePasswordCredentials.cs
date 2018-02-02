@@ -18,6 +18,7 @@ namespace WebApp_ebuilder.Models
         [Required(ErrorMessage ="Password")]
         [Display(Name ="New Password")]
         [DataType(DataType.Password)]
+        [StringLength(int.MaxValue, MinimumLength = 8, ErrorMessage ="Minimum 8 characters")]
         public string newPassword { get; set; }
     }
 }

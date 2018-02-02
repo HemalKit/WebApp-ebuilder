@@ -54,7 +54,7 @@
 
             @if (DateTime.Compare(item.date, DateTime.Today) >= 0)
             {
-                @Html.ActionLink("Edit ", "Edit", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit ", "Edit", new { DLID=item.DLID })
                
                 @Html.ActionLink("Delete", "Delete", new { DLID=item.DLID })
 

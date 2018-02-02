@@ -46,7 +46,7 @@ namespace WebApp_ebuilder.Controllers
                 ViewBag.Message = "Error Occured";
                 return View();
             }
-            
+
 
         }
 
@@ -104,7 +104,7 @@ namespace WebApp_ebuilder.Controllers
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                    var response = await client.GetAsync("DutyLeaves?EID="+User.EID);
+                    var response = await client.GetAsync("DutyLeaves?EID=" + User.EID);
                     if (response.IsSuccessStatusCode)
                     {
                         var responseData = response.Content.ReadAsStringAsync().Result;
@@ -122,7 +122,7 @@ namespace WebApp_ebuilder.Controllers
             {
                 ViewBag.Message = "An error occured";
                 return View();
-            }           
+            }
         }
 
         [HttpGet]
@@ -179,5 +179,67 @@ namespace WebApp_ebuilder.Controllers
 
         }
 
-    }
+        [HttpGet]
+        public async System.Threading.Tasks.Task<ActionResult> Edit(string DLID)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
+
+                    var response = await client.GetAsync("DutyLeaves/" + DLID.ToString());
+                    var responseData = response.Content.ReadAsStringAsync().Result;
+                    var dutyLeave = JsonConvert.DeserializeObject<duty_leave>(responseData);
+
+                    return View(dutyLeave);
+                }
+            }
+            catch (Exception)
+            {
+                return ViewBag.Message = "Error Occured";
+            }
+        }
+
+        [HttpPost]
+        public async System.Threading.Tasks.Task<ActionResult> Edit(duty_leave dutyLeave)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
+
+                    var json = JsonConvert.SerializeObject(dutyLeave);
+                    var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    var response = await client.PutAsync("DutyLeave",stringContent);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ViewBag.Message = "Success";
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Error Occured";
+                        return View();
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "Error Occured";
+                return View();
+            }
+
+
+
+        }
+    }       
+            
 }

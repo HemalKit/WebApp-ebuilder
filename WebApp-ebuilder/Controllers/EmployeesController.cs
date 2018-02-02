@@ -101,77 +101,86 @@ namespace WebApp_ebuilder.Controllers
         [ValidateAntiForgeryToken]
         public async System.Threading.Tasks.Task<ActionResult> Login(employeeLogin login, string ReturnUrl = "")
         {
-            string message = "";
-            try
+            if (ModelState.IsValid)
             {
-                message = "Entered the try block";
-                using (HttpClient client = new HttpClient())
+
+
+                string message = "";
+                try
                 {
-                    client.BaseAddress = new Uri(BaseUrl);
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
-
-                    var json = JsonConvert.SerializeObject(login);
-                    var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-
-                    var response = await client.PostAsync("Access", stringContent);
-                    if (response.IsSuccessStatusCode)
+                    message = "Entered the try block";
+                    using (HttpClient client = new HttpClient())
                     {
+                        client.BaseAddress = new Uri(BaseUrl);
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
 
-                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                        var json = JsonConvert.SerializeObject(login);
+                        var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                        var response = await client.PostAsync("Access", stringContent);
+                        if (response.IsSuccessStatusCode)
                         {
-                            message = "Success Login";
 
-                            var responseData = response.Content.ReadAsStringAsync().Result;
-                            var empData = JsonConvert.DeserializeObject<employee>(responseData);
-
-                            customPrincipalSerializeModel serializeEmployee = new customPrincipalSerializeModel();
-                            serializeEmployee.email = empData.email;
-                            serializeEmployee.EID = empData.EID;
-                            serializeEmployee.FirstName = empData.fName;
-                            serializeEmployee.LastName = empData.lName;
-                            serializeEmployee.Role = empData.jobCategory;
-
-                            string accessData = JsonConvert.SerializeObject(serializeEmployee);
-
-                            int timeout = login.rememberMe ? 525600 : 10; //525600 min = 1 year
-
-                            var ticket = new FormsAuthenticationTicket(1, login.email, DateTime.Now, DateTime.Now.AddMinutes(timeout), true, accessData);
-                            string encrypted = FormsAuthentication.Encrypt(ticket);
-
-                            var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
-                            cookie.Expires = DateTime.Now.AddMinutes(timeout);
-                            cookie.HttpOnly = true;
-                            Response.Cookies.Add(cookie);// add cookie with the encrypted ticket
-
-
-                            if (Url.IsLocalUrl(ReturnUrl))
+                            if (response.StatusCode == System.Net.HttpStatusCode.OK)
                             {
-                                return Redirect(ReturnUrl);
+                                message = "Success Login";
+
+                                var responseData = response.Content.ReadAsStringAsync().Result;
+                                var empData = JsonConvert.DeserializeObject<employee>(responseData);
+
+                                customPrincipalSerializeModel serializeEmployee = new customPrincipalSerializeModel();
+                                serializeEmployee.email = empData.email;
+                                serializeEmployee.EID = empData.EID;
+                                serializeEmployee.FirstName = empData.fName;
+                                serializeEmployee.LastName = empData.lName;
+                                serializeEmployee.Role = empData.jobCategory;
+
+                                string accessData = JsonConvert.SerializeObject(serializeEmployee);
+
+                                int timeout = login.rememberMe ? 525600 : 10; //525600 min = 1 year
+
+                                var ticket = new FormsAuthenticationTicket(1, login.email, DateTime.Now, DateTime.Now.AddMinutes(timeout), true, accessData);
+                                string encrypted = FormsAuthentication.Encrypt(ticket);
+
+                                var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encrypted);
+                                cookie.Expires = DateTime.Now.AddMinutes(timeout);
+                                cookie.HttpOnly = true;
+                                Response.Cookies.Add(cookie);// add cookie with the encrypted ticket
+
+
+                                if (Url.IsLocalUrl(ReturnUrl))
+                                {
+                                    return Redirect(ReturnUrl);
+
+                                }
+                                else
+                                {
+                                    return RedirectToAction("Dashboard", "Home");
+                                }
 
                             }
-                            else
+                            else if (response.Content.ReadAsStringAsync().Result == null)
                             {
-                                return RedirectToAction("Dashboard", "Home");
+                                message = " Wrong Email or Password";
                             }
-
                         }
-                        else if (response.Content.ReadAsStringAsync().Result == null)
+                        else
                         {
-                            message = " Wrong Email or Password";
+                            message = "Wrong Email or Password ";
                         }
+                        ViewBag.message = message;
+                        return View();
                     }
-                    else
-                    {
-                        message = "Wrong Email or Password ";
-                    }
-                    ViewBag.message = message;
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.message = ex;
                     return View();
                 }
             }
-            catch (Exception ex)
+            else
             {
-                ViewBag.message = ex;
                 return View();
             }
         }
@@ -301,29 +310,37 @@ namespace WebApp_ebuilder.Controllers
         [CustomAuthorize]
         public async System.Threading.Tasks.Task<ActionResult> ChangePassword(changePasswordCredentials credentials)
         {
-
-            using (HttpClient client = new HttpClient())
+            if (ModelState.IsValid)
             {
-                client.BaseAddress = new Uri(BaseUrl);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
-                credentials.EID = User.EID;
 
-                var json = JsonConvert.SerializeObject(credentials);
-                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await client.PutAsync("Employees/ChangePassword", stringContent);
-
-                if (response.IsSuccessStatusCode)
+                using (HttpClient client = new HttpClient())
                 {
-                    ViewBag.Message = "Successfully changed the password";
-                    return View();
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+                    credentials.EID = User.EID;
+
+                    var json = JsonConvert.SerializeObject(credentials);
+                    var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    var response = await client.PutAsync("Employees/ChangePassword", stringContent);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ViewBag.Message = "Successfully changed the password";
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.Message = response.Content.ReadAsStringAsync().Result;
+                        return View();
+                    }
                 }
-                else
-                {
-                    ViewBag.Message = response.Content.ReadAsStringAsync().Result;
-                    return View();
-                }
+            }
+            else
+            {
+                return View();
             }
         }
 
@@ -363,57 +380,77 @@ namespace WebApp_ebuilder.Controllers
         [HttpPost]
         public async System.Threading.Tasks.Task<ActionResult> ForgotPassword(forgotPasswordCredential credential)
         {
-           
-            using (HttpClient client = new HttpClient())
+            if (ModelState.IsValid)
             {
-               
-                client.BaseAddress = new Uri(BaseUrl);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
 
-                if (check == 0)
+
+                using (HttpClient client = new HttpClient())
                 {
-                    var json = JsonConvert.SerializeObject(credential.email);
-                    var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-                    var response = await client.PutAsync("Employees/ForgotPassword", stringContent);
-                    
-                    if (response.IsSuccessStatusCode)
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+
+                    if (check == 0)
                     {
-                        check = 1;
-                        ViewBag.Message = "Success";
-                        return View();
+                        var json = JsonConvert.SerializeObject(credential.email);
+                        var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                        var response = await client.PutAsync("Employees/ForgotPassword", stringContent);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            check = 1;
+                            ViewBag.Message = "Success";
+                            return View();
+                        }
+                        else
+                        {
+                            ViewBag.Message = "Error Occured! Check the email you gave";
+                            return View();
+                        }
+
                     }
-                    else
+                    else if (check == 1)
                     {
-                        ViewBag.Message = "Error Occured! Check the email you gave";
-                        return View();
+                        var json = JsonConvert.SerializeObject(credential);
+                        var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+                        var response = await client.PutAsync("Employees/ResetPassword", stringContent);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            check = 0;
+                            ViewBag.Message = "Password Reset Successful";
+                            return View();
+
+                        }
+                        else
+                        {
+                            check = 1;
+                            ViewBag.Message = "Error! Seems like incorret verification code";
+                            return View();
+                        }
+
                     }
-                    
+                    return View();
                 }
-                else if(check == 1)
-                {
-                    var json = JsonConvert.SerializeObject(credential);
-                    var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PutAsync("Employees/ResetPassword", stringContent);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        check = 0;
-                        ViewBag.Message = "Password Reset Successful";
-                        return View();
-                        
-                    }
-                    else
-                    {
-                        check = 1;
-                        ViewBag.Message = "Error! Seems like incorret verification code";
-                        return View();
-                    }
-
-                }
+            }
+            else
+            {
                 return View();
             }
+        }
+
+
+        [HttpGet]
+        public async System.Threading.Tasks.Task<ActionResult> Details(string EID)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                ViewBag.EID = EID;
+                return View();
+            }
+            
         }
 
 

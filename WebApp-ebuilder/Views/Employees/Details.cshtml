@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<button onclick="location.href='@Url.Action("ViewLeaves", "Leaves",new { EID=ViewBag.EID})'" class="btn btn-primary">
+    Leave Details
+</button>
+
+<button onclick="location.href='@Url.Action("ViewAttendance", "Attendance",new { EID=ViewBag.EID})'" class="btn btn-primary">
+    Attendance Details
+</button>
+
