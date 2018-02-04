@@ -12,6 +12,7 @@ using WebApp_ebuilder.Models;
 
 namespace WebApp_ebuilder.Controllers
 {
+    [CustomAuthorize]
     public class DutyLeavesController : BaseController
     {
         // GET: DutyLeaves
@@ -50,13 +51,11 @@ namespace WebApp_ebuilder.Controllers
 
         }
 
-        [HttpGet]
-        [CustomAuthorize]
+        [HttpGet]        
         public ActionResult ApplyDutyLeave()
         {
             return View();
         }
-
         [HttpPost]
         public async System.Threading.Tasks.Task<ActionResult> ApplyDutyLeave(duty_leave newDutyLeave)
         {
@@ -93,7 +92,7 @@ namespace WebApp_ebuilder.Controllers
             }
         }
 
-        [CustomAuthorize]
+
         public async System.Threading.Tasks.Task<ActionResult> ViewDutyLeaves()
         {
             try
@@ -109,7 +108,9 @@ namespace WebApp_ebuilder.Controllers
                     {
                         var responseData = response.Content.ReadAsStringAsync().Result;
                         var dutyLeavesData = JsonConvert.DeserializeObject<List<duty_leave>>(responseData);
-                        return View(dutyLeavesData);
+                        var dutyLeaveViews = new List<dutyLeaveView>();
+                        dutyLeavesData.ForEach(dl => dutyLeaveViews.Add(new dutyLeaveView(dl)));
+                        return View(dutyLeaveViews);
                     }
                     else
                     {
@@ -217,7 +218,7 @@ namespace WebApp_ebuilder.Controllers
                     var json = JsonConvert.SerializeObject(dutyLeave);
                     var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-                    var response = await client.PutAsync("DutyLeave",stringContent);
+                    var response = await client.PutAsync("DutyLeaves/"+dutyLeave.DLID.ToString(),stringContent);
                     if (response.IsSuccessStatusCode)
                     {
                         ViewBag.Message = "Success";

@@ -59,7 +59,12 @@
         <div class="form-group">
             @Html.LabelFor(model => model.leaveCategory, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.leaveCategory, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.leaveCategory,new List<SelectListItem> {
+               new SelectListItem{Text="Casual",Value="casual"},
+               new SelectListItem{Text="Half Day", Value="half day"},
+               new SelectListItem{Text="Medical", Value="medical"},
+               new SelectListItem{Text="Short Leave", Value="short leave"}
+                 },new { htmlAttributes = new { @class = "form-control dropdown-menu" } })
                 @Html.ValidationMessageFor(model => model.leaveCategory, "", new { @class = "text-danger" })
             </div>
         </div>

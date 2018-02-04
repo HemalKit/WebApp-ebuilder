@@ -156,7 +156,6 @@
     <Compile Include="Controllers\LeavesController.cs" />
     <Compile Include="Controllers\LeaveTypesController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
-    <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -171,6 +170,7 @@
     <Compile Include="Models\Chart.cs" />
     <Compile Include="Models\count.cs" />
     <Compile Include="Models\customPrincipalSerializeModel.cs" />
+    <Compile Include="Models\dutyLeaveView.cs" />
     <Compile Include="Models\duty_leave.cs" />
     <Compile Include="Models\employee.cs" />
     <Compile Include="Models\employeeLogin.cs" />
@@ -232,6 +232,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\Images\desk-bachground.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace WebApp_ebuilder.Models
 {
@@ -19,6 +20,7 @@ namespace WebApp_ebuilder.Models
         [Required(ErrorMessage ="Leave Category is required")]
         [Display(Name ="Leave Category")]
         public string leaveCategory { get; set; }
+
 
     }
 }

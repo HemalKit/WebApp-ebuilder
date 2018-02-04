@@ -20,6 +20,7 @@ namespace WebApp_ebuilder.Controllers
         [CustomAuthorize(Roles = "HR Admin")]
         public ActionResult Register()
         {
+            
             ViewBag.Message = null;
             return View();
         }
@@ -443,7 +444,7 @@ namespace WebApp_ebuilder.Controllers
 
 
         [HttpGet]
-        public async System.Threading.Tasks.Task<ActionResult> Details(string EID)
+        public ActionResult Details(string EID)
         {
             using (HttpClient client = new HttpClient())
             {

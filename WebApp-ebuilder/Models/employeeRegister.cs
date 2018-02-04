@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace WebApp_ebuilder.Models
 {
@@ -36,6 +37,7 @@ namespace WebApp_ebuilder.Models
         [Display(Name = "Last Name")]
         public string lName { get; set; }
 
+
         [Required(ErrorMessage ="Required")]
         [Display(Name = "Gender")]
         public string gender { get; set; }
@@ -53,5 +55,11 @@ namespace WebApp_ebuilder.Models
         [Display(Name = "Job Category")]
         public string jobCategory { get; set; }
 
+    }
+
+    public enum genders
+    {
+        Male,
+        Female
     }
 }

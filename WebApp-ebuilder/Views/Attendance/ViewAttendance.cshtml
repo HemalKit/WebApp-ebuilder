@@ -9,9 +9,7 @@
 
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.AID)
-        </th>
+        
         <th>
             @Html.DisplayNameFor(model => model.date)
         </th>
@@ -32,9 +30,7 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.AID)
-        </td>
+        
         <td>
             @Html.DisplayFor(modelItem => item.date)
         </td>
@@ -44,6 +40,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.checkOut)
         </td>
+        
         <td>
             @Html.DisplayFor(modelItem => item.EID)
         </td>

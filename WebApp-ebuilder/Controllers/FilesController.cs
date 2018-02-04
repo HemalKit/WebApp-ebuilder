@@ -8,10 +8,12 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using WebApp_ebuilder.Authorizer;
 using WebApp_ebuilder.Models;
 
 namespace WebApp_ebuilder.Controllers
 {
+    [CustomAuthorize(Roles ="HR Admin")]
     public class FilesController : BaseController
     {
         // GET: Files
@@ -67,12 +69,12 @@ namespace WebApp_ebuilder.Controllers
                                 client.DefaultRequestHeaders.Accept.Clear();
                                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                                //var serializer = new JavaScriptSerializer();
                                 var json = JsonConvert.SerializeObject(newAttendance);
                                 var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
                                 var response = await client.PostAsync("Attendance", stringContent);
 
-                                ViewBag.Message += response.Content.ReadAsStringAsync().Result;
+                                var message = response.Content.ReadAsStringAsync().Result;
+                                ViewBag.Message += JsonConvert.DeserializeObject(message);
 
                             }
                         }

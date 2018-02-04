@@ -1,4 +1,5 @@
-﻿@model WebApp_ebuilder.Models.employeeRegister
+﻿@using WebApp_ebuilder.Models
+@model WebApp_ebuilder.Models.employeeRegister
 
 @{
     ViewBag.Title = "Register";
@@ -85,7 +86,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.gender, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.gender, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.gender, new SelectList(Enum.GetValues(typeof(genders))),"Select gender", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.gender, "", new { @class = "text-danger" })
             </div>
         </div>

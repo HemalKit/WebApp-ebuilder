@@ -3,7 +3,7 @@
 <div class="col-lg-12">
     <div class="row">
         <div class="form-group">
-            <label>Leaves Taken</label>
+            <label></label>
             <canvas id="DonutChart0" width="600" height="500"></canvas>
         </div>
     </div>
@@ -12,7 +12,7 @@
 <div class="col-lg-12">
     <div class="row">
         <div class="form-group">
-            <label>Leaves Left</label>
+            <label></label>
             <canvas id="DonutChart1" width="600" height="500"></canvas>
         </div>
     </div>
@@ -21,8 +21,17 @@
 <div class="col-lg-12">
     <div class="row">
         <div class="form-group">
-            <label>Leaves Left</label>
+            <label></label>
             <canvas id="DonutChart2" width="600" height="500"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12">
+    <div class="row">
+        <div class="form-group">
+            <label></label>
+            <canvas id="DonutChart3" width="600" height="500"></canvas>
         </div>
     </div>
 </div>
@@ -39,6 +48,12 @@
         var myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: tData[0],
+            options: {
+                title: {
+                    display: true,
+                    text: 'casual'
+                }
+            }
         });
 
         var c = document.getElementById("DonutChart1");
@@ -47,6 +62,12 @@
         var myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: tData[1],
+            options: {
+                title: {
+                    display: true,
+                    text: 'half day'
+                }
+            }
         });
 
         var c = document.getElementById("DonutChart2");
@@ -55,6 +76,26 @@
         var myPieChart = new Chart(ctx, {
             type: 'doughnut',
             data: tData[2],
+            options: {
+                title: {
+                    display: true,
+                    text: 'medical'
+                }
+            }
+        });
+
+        var c = document.getElementById("DonutChart3");
+        debugger
+        var ctx = c.getContext("2d");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: tData[3],
+            options: {
+                title: {
+                    display: true,
+                    text: 'short leave'
+                }
+            }
         });
     </script>
 }

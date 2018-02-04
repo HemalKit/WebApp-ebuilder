@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebApp_ebuilder.Models.duty_leave>
+﻿@model IEnumerable<WebApp_ebuilder.Models.dutyLeaveView>
 
 @{
     ViewBag.Title = "ViewDutyLeaves";
@@ -25,6 +25,7 @@
         <th>
             @Html.DisplayNameFor(model => model.location)
         </th>
+        
         <th></th>
     </tr>
 
@@ -49,6 +50,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.location)
         </td>
+        
         <td>
             @Html.ActionLink("Track Details", "TrackLocation", new { dlid = item.DLID })
 

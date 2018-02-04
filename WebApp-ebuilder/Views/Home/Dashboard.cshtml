@@ -12,8 +12,27 @@
 
 }
 
-<h2>Dashboard</h2>
-<div></div>
+<body style="background-image:url(~/Content/Images/desk-bachground.jpg)">
+    <h2>Dashboard</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <button onclick="location.href='@Url.Action("ApplyLeave","Leaves")'" class="btn-lg btn-primary">
+                    Apply Leaves
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <button onclick="location.href='@Url.Action("ApplyDutyLeave","DutyLeaves")'" class="btn-lg btn-primary">
+                    Apply Duty Leave
+                </button>
+            </div>
+        </div>
+    </div>
+    <img  class="img-fluid" alt="Responsive image" src="~/Content/Images/desk-bachground.jpg" />
+
+</body>
 
 
 

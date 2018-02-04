@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -26,6 +27,7 @@ namespace WebApp_ebuilder.Controllers
         [HttpGet]               
         public ActionResult ApplyLeave()
         {
+            var model = new leaveApplyForm();
             return View();
         }
 
@@ -99,6 +101,7 @@ namespace WebApp_ebuilder.Controllers
         }
 
         [HttpGet]
+        [CustomAuthorize]
         public ActionResult ViewLeavesSummary()
         {
             
@@ -107,6 +110,7 @@ namespace WebApp_ebuilder.Controllers
 
 
         [HttpGet]
+        [CustomAuthorize]
         public async System.Threading.Tasks.Task<ActionResult> ViewLeaves(string EID)
         {
             try
@@ -145,6 +149,7 @@ namespace WebApp_ebuilder.Controllers
         }
 
 
+        [CustomAuthorize]
         public async System.Threading.Tasks.Task<JsonResult> LeavesCount()
         {
             using (HttpClient client = new HttpClient())
@@ -160,6 +165,7 @@ namespace WebApp_ebuilder.Controllers
                     var leaveData = JsonConvert.DeserializeObject<List<count>>(responseData);
 
                     var chartList = new List<Chart>();
+                    
                     foreach (var ld in leaveData)
                     {
                         Chart _chart = new Chart();
@@ -169,6 +175,7 @@ namespace WebApp_ebuilder.Controllers
                         _dataSet.Add(new Datasets()
                         {
                             label = ld.leaveCategory,
+                            yLabels = "Hours",
                             data = new int[] { ld.takenCount, ld.leftCount },
                             backgroundColor = new string[] { "#00ff00", "#0000FF" },
                             borderColor = new string[] { "#00ff00", "#0000FF" },
@@ -176,6 +183,7 @@ namespace WebApp_ebuilder.Controllers
                         });
                         _chart.datasets = _dataSet;
                         chartList.Add(_chart);
+                        
                     }
                     
                     return Json(chartList, JsonRequestBehavior.AllowGet);
@@ -187,6 +195,7 @@ namespace WebApp_ebuilder.Controllers
 
 
         [HttpGet]
+        [CustomAuthorize]
         public async System.Threading.Tasks.Task<ActionResult> Edit(int LID)
         {
             using (HttpClient client = new HttpClient())
@@ -204,6 +213,7 @@ namespace WebApp_ebuilder.Controllers
         }
 
         [HttpPost]
+        [CustomAuthorize]
         public async System.Threading.Tasks.Task<ActionResult> Edit(leav leave)
         {
             try
@@ -239,6 +249,7 @@ namespace WebApp_ebuilder.Controllers
         }
 
         [HttpGet]
+        [CustomAuthorize]
         public async System.Threading.Tasks.Task<ActionResult> Delete(int LID)
         {
             try
@@ -272,6 +283,7 @@ namespace WebApp_ebuilder.Controllers
         }
 
         [HttpPost]
+        [CustomAuthorize]
         public async System.Threading.Tasks.Task<ActionResult> Delete(leav leave)
         {
             try

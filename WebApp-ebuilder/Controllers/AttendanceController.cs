@@ -8,11 +8,13 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using WebApp_ebuilder.Authorizer;
 using WebApp_ebuilder.Models;
 
 
 namespace WebApp_ebuilder.Controllers
 {
+    [CustomAuthorize]
     public class AttendanceController : BaseController
     {
         // GET: Attendance

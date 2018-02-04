@@ -39,7 +39,6 @@ namespace WebApp_ebuilder.Controllers
             }
         }
 
-
         //Get the all taken and available leave counts within a given range for the logged in user
         //needs edit
         //public async System.Threading.Tasks.Task<ActionResult> AllLeaveReports(string startDate, string endDate)
@@ -58,8 +57,6 @@ namespace WebApp_ebuilder.Controllers
         //}
 
         //needs edit
-
-
        
         public async System.Threading.Tasks.Task<ActionResult> LeaveReportsByTypes(leaveParameter parameter)
         {
