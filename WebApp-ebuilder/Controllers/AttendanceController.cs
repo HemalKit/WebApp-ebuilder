@@ -133,7 +133,31 @@ namespace WebApp_ebuilder.Controllers
 
         }
 
-    }
+        [HttpGet]
+        public async System.Threading.Tasks.Task<ActionResult> WorkingHours(string EID)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
+                    var response = await client.GetAsync("Attendance/WorkingHours?EID=" + EID);
+                    var responseData = response.Content.ReadAsStringAsync().Result;
+                    var totalWH = JsonConvert.DeserializeObject<double>(responseData);
+
+                    ViewBag.WorkingHours = totalWH;
+                    return View();
+                }
+            }
+            catch (Exception)
+            {
+                return View();
+            }
+        }
+
+    }
 
 }

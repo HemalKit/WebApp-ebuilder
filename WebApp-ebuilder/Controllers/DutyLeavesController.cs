@@ -67,29 +67,33 @@ namespace WebApp_ebuilder.Controllers
         {
             try
             {
-                using (HttpClient client = new HttpClient())
+                if (ModelState.IsValid)
                 {
-                    newDutyLeave.EID = User.EID;
-                    client.BaseAddress = new Uri(BaseUrl);
-                    client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
-
-                    var json = JsonConvert.SerializeObject(newDutyLeave);
-                    var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-
-                    var response = await client.PostAsync("DutyLeaves", stringContent);
-
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    using (HttpClient client = new HttpClient())
                     {
-                        ViewBag.Message = "Successfully Added";
+                        newDutyLeave.EID = User.EID;
+                        client.BaseAddress = new Uri(BaseUrl);
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                    }
-                    else
-                    {
-                        ViewBag.Message = "Error Occured" + response.Content.ReadAsStringAsync().Result; ;
+                        var json = JsonConvert.SerializeObject(newDutyLeave);
+                        var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                        var response = await client.PostAsync("DutyLeaves", stringContent);
+
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            ViewBag.Message = "Successfully Added";
+
+                        }
+                        else
+                        {
+                            ViewBag.Message = "Error Occured" ;
+                        }
                     }
                 }
                 return View();
+                                                
             }
             catch (Exception)
             {

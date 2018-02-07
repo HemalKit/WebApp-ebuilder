@@ -12,9 +12,9 @@
 
   $(document).ready(function() {
       $("#date").datepicker({
-          dateFormat:"mm/dd/yy",
+          dateFormat:"dd/mm/yy",
           minDate: -0,
-          maxDate: "+0M +0D +10Y"
+          maxDate: "+0D +0M +10Y"
 
       });
   });
@@ -59,9 +59,14 @@
         
 
         <div class="form-group">
-            @Html.LabelFor(model => model.leaveCategory, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.leaveCategory,htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.leaveCategory, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.leaveCategory, new List<SelectListItem> {
+               new SelectListItem{Text="Casual",Value="casual"},
+               new SelectListItem{Text="Half Day", Value="half day"},
+               new SelectListItem{Text="Medical", Value="medical"},
+               new SelectListItem{Text="Short Leave", Value="short leave"}
+                 }, new { htmlAttributes = new { @class = "form-control dropdown-menu" } })
                 @Html.ValidationMessageFor(model => model.leaveCategory, "", new { @class = "text-danger" })
             </div>
         </div>

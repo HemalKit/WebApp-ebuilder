@@ -375,6 +375,7 @@
     <Content Include="Views\Leaves\Delete.cshtml" />
     <Content Include="Views\Employees\Details.cshtml" />
     <Content Include="Views\DutyLeaves\Edit.cshtml" />
+    <Content Include="Views\Attendance\WorkingHours.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

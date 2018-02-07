@@ -35,4 +35,10 @@ namespace WebApp_ebuilder.Models
 
         internal virtual ICollection<leav> leavs { get; set; }
     }
+
+    public enum jobCategories
+    {
+        
+
+    }
 }

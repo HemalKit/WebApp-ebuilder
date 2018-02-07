@@ -34,10 +34,7 @@
             @Html.DisplayFor(modelItem => item.maxAllowed)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { jobCategory = item.jobCategory, leaveCategory = item.leaveCategory }) |
-            
-            @Html.ActionLink("Delete", "Delete", new { jobCategory = item.jobCategory, leaveCategory = item.leaveCategory })
-            
+            @Html.ActionLink("Edit", "Edit", new { jobCategory = item.jobCategory, leaveCategory = item.leaveCategory }) 
         </td>
     </tr>
 }
