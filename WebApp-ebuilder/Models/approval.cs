@@ -22,4 +22,10 @@ namespace WebApp_ebuilder.Models
         public virtual leav leav { get; set; }
         public virtual employee employee { get; set; }
     }
+    public enum statuses
+    {
+        pending,
+        accepted,
+        rejected
+    }
 }

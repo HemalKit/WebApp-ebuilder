@@ -18,11 +18,6 @@ namespace WebApp_ebuilder.Controllers
     public class AttendanceController : BaseController
     {
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         public async System.Threading.Tasks.Task<ActionResult> ViewAttendance(string EID)
         {
             using (HttpClient client = new HttpClient())
@@ -32,7 +27,7 @@ namespace WebApp_ebuilder.Controllers
                 //Set the headers to get the data in json format
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var response = await client.GetAsync("Attendance?EID=" + User.EID);
+                var response = await client.GetAsync("Attendance?EID=" + EID);
                 if (response.IsSuccessStatusCode)
                 {
                     var responseData = response.Content.ReadAsStringAsync().Result;

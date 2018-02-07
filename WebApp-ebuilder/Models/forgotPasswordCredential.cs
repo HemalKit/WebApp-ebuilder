@@ -19,6 +19,7 @@ namespace WebApp_ebuilder.Models
         [Display(Name ="New Password")]
         [DataType(DataType.Password)]
         [StringLength(int.MaxValue, MinimumLength =8,ErrorMessage = "Minimum 8 characters")]
+        [RegularExpression("^((?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])).{8,}$", ErrorMessage = "Password must contain numbers and both uppercase and lowercase letters.")]
         public string newPassword { get; set; }
     }
 }

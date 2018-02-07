@@ -84,7 +84,7 @@
                         </li>
 
                         <li>
-                            <a href="@Url.Action("ViewDutyLeaves","DutyLeaves")">View Duty Leaves</a>
+                            <a href="@Url.Action("ViewDutyLeaves","DutyLeaves",new { EID=User.EID})">View Duty Leaves</a>
                         </li>
                     </ul>
                 </li>
@@ -96,11 +96,11 @@
                     </a>
                     <ul class="sidenav-second-level collapse" id="collapseAttendance">
                         <li>
-                            <a href="@Url.Action("ViewAttendance","Attendance")">View Attendance</a>
+                            <a href="@Url.Action("ViewAttendance","Attendance",new { EID=User.EID})">View Attendance</a>
                         </li>
 
                         <li>
-                            <a href="@Url.Action("ViewAttendanceAsChart","Attendance")">View Attendance As Charts</a>
+                            <a href="@Url.Action("ViewAttendanceChart","Attendance")">View Attendance As Charts</a>
                         </li>
                     </ul>
                 </li>

@@ -14,7 +14,7 @@ namespace WebApp_ebuilder.Models
         [DataType(DataType.Date)]
         public System.DateTime date { get; set; }
 
-        [Display(Name ="Name")]
+        [Display(Name ="Reason")]
         public string reason { get; set; }
 
         [Display(Name ="Leave Category")]

@@ -20,7 +20,17 @@
     var tData = $.getValues("/Attendance/ViewAttendanceAsChart");
     var myBarChart = new Chart(ctx, {
         type: 'bar',
-        data: tData
+        data: tData,
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        suggestedMin: 0,
+                        suggestedMax: 23
+                    }
+                }]
+            }
+        }
     });
 
 </script>

@@ -9,6 +9,7 @@ namespace WebApp_ebuilder.Models
     public class employeeLogin
     {
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress, ErrorMessage ="Enter a valid email address")]
         [Required(AllowEmptyStrings =false, ErrorMessage = "Email is Required")]
         public string email { get; set; }
 

@@ -100,7 +100,7 @@ namespace WebApp_ebuilder.Controllers
 
 
         //display the list of duty leaves applied by a certain user
-        public async System.Threading.Tasks.Task<ActionResult> ViewDutyLeaves()
+        public async System.Threading.Tasks.Task<ActionResult> ViewDutyLeaves(string EID)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace WebApp_ebuilder.Controllers
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
                     //call the api to get the list of duty leaves applied by the logged in user
-                    var response = await client.GetAsync("DutyLeaves?EID=" + User.EID);
+                    var response = await client.GetAsync("DutyLeaves?EID=" +EID);
                     if (response.IsSuccessStatusCode)
                     {
                         var responseData = response.Content.ReadAsStringAsync().Result;

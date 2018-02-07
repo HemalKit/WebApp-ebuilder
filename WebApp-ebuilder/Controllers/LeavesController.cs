@@ -178,8 +178,8 @@ namespace WebApp_ebuilder.Controllers
                             label = ld.leaveCategory,
                             yLabels = "Hours",
                             data = new int[] { ld.takenCount, ld.leftCount },
-                            backgroundColor = new string[] { "#00ff00", "#0000FF" },
-                            borderColor = new string[] { "#00ff00", "#0000FF" },
+                            backgroundColor = new string[] { "#a30303", "#29ad2e" },
+                            borderColor = new string[] { "#a30303", "#29ad2e" },
                             borderWidth = "1"
                         });
                         _chart.datasets = _dataSet;

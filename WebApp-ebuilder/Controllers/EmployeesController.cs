@@ -104,8 +104,6 @@ namespace WebApp_ebuilder.Controllers
         {
             if (ModelState.IsValid)
             {
-
-
                 string message = "";
                 try
                 {
@@ -250,16 +248,25 @@ namespace WebApp_ebuilder.Controllers
         [HttpGet]
         public async System.Threading.Tasks.Task<ActionResult> Edit(string EID)
         {
-            using (HttpClient client = new HttpClient())
+            if (ModelState.IsValid)
             {
-                client.BaseAddress = new Uri(BaseUrl);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var response = await client.GetAsync("Employees/" + EID);
-                var responseData = response.Content.ReadAsStringAsync().Result;
-                var employeeData = JsonConvert.DeserializeObject<employee>(responseData);
-                return View(employeeData);
+
+                using (HttpClient client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(BaseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+
+                    var response = await client.GetAsync("Employees/" + EID);
+                    var responseData = response.Content.ReadAsStringAsync().Result;
+                    var employeeData = JsonConvert.DeserializeObject<employee>(responseData);
+                    return View(employeeData);
+                }
+            }
+            else
+            {
+                return View();
             }
         }
 
@@ -313,8 +320,6 @@ namespace WebApp_ebuilder.Controllers
         {
             if (ModelState.IsValid)
             {
-
-
                 using (HttpClient client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(BaseUrl);

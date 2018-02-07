@@ -13,20 +13,41 @@
 
     <button onclick="leaveAppliedMonthly()" class="btn btn-primary">
         Leaves Applied by Month
-    </button>  
+    </button>
 
+    <button onclick="dutyLeavesWeekday()" class="btn btn-primary">
+        Duty Leaves by Weekday
+    </button>
+
+    <button onclick="dutyLeavesMonthly()" class="btn btn-primary">
+        Duty Leaves by Month
+    </button>
+    
+    <hr/>
 
     <div class="row">
         <div class="col-lg-6">
             <div class="form-group">
-                <label></label>
+                <label>Leaves Applied by Weekday <b>(%)</b></label>
                 <canvas id="DonutChart1" width="400" height="400"></canvas>
             </div>
         </div>
         <div class="col-lg-6">
             <div class="form-group">
-                <label></label>
+                <label>Leaves Applied by Month <b>(%)</b></label>
                 <canvas id="DonutChart2" width="400" height="400"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Duty Leaves by Weekday <b>(%)</b></label>
+                <canvas id="DonutChart3" width="400" height="400"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Duty Leaves by Month <b>(%)</b></label>
+                <canvas id="DonutChart4" width="400" height="400"></canvas>
             </div>
         </div>
     </div>
@@ -62,5 +83,29 @@
             
         });
     }
+
+    function dutyLeavesWeekday() {
+        var c = document.getElementById("DonutChart3");
+        debugger
+        var ctx = c.getContext("2d");
+        var tData = $.getValues("/Reports/DutyLeavesByWeekday");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: tData
+        });
+    }
+
+    function dutyLeavesMonthly() {
+        var c = document.getElementById("DonutChart4");
+        debugger
+        var ctx = c.getContext("2d");
+        var tData = $.getValues("/Reports/DutyLeavesByMonth");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: tData
+        });
+    }
+
+
 </script>
     }
