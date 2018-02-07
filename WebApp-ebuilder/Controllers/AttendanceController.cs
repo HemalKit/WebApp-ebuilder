@@ -17,7 +17,7 @@ namespace WebApp_ebuilder.Controllers
     [CustomAuthorize]
     public class AttendanceController : BaseController
     {
-        // GET: Attendance
+
         public ActionResult Index()
         {
             return View();
@@ -29,6 +29,7 @@ namespace WebApp_ebuilder.Controllers
             {
                 client.BaseAddress = new Uri(BaseUrl);
                 client.DefaultRequestHeaders.Accept.Clear();
+                //Set the headers to get the data in json format
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
                 var response = await client.GetAsync("Attendance?EID=" + User.EID);
@@ -41,7 +42,6 @@ namespace WebApp_ebuilder.Controllers
                 return View();
             }
         }
-
         
         public ActionResult ViewAttendanceChart()
         {
@@ -96,7 +96,6 @@ namespace WebApp_ebuilder.Controllers
             return View();
 
         }
-
 
         [HttpPost]
         public async System.Threading.Tasks.Task<ActionResult> AddAttendance(attendanceView attView)

@@ -47,8 +47,6 @@ namespace WebApp_ebuilder.Models
         [Display(Name ="End Time")]
         public System.TimeSpan endTime { get; set; }
 
-
-
         public virtual employee employee { get; set; }
         internal virtual ICollection<tracking> trackings { get; set; }
     }

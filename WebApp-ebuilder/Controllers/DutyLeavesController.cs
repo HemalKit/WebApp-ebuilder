@@ -15,28 +15,30 @@ namespace WebApp_ebuilder.Controllers
     [CustomAuthorize]
     public class DutyLeavesController : BaseController
     {
-        // GET: DutyLeaves
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+       
+        //get the trackings for a particular duty leave, DLID is the id of the duty leave
         public async System.Threading.Tasks.Task<ActionResult> TrackLocation(int DLID)
         {
             try
             {
-
                 using (HttpClient client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(BaseUrl);
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
+                    //call the api
                     var response = await client.GetAsync("Trackings?DLID=" + DLID.ToString());
+                    //if the response is successful
                     if (response.IsSuccessStatusCode)
                     {
+                        //read the content of the response
                         var responseData = response.Content.ReadAsStringAsync().Result;
+
+                        //convert from json to lis of tracking objects
                         List<tracking> trackingData = JsonConvert.DeserializeObject<List<tracking>>(responseData);
+
+                        //pass the list of trackings to the view
                         return View(trackingData);
                     }
                     return View();
@@ -51,11 +53,15 @@ namespace WebApp_ebuilder.Controllers
 
         }
 
+
+        //display the form to apply duty leave
         [HttpGet]        
         public ActionResult ApplyDutyLeave()
         {
             return View();
         }
+
+        //pass the new duty leave object to api which is coming from the form
         [HttpPost]
         public async System.Threading.Tasks.Task<ActionResult> ApplyDutyLeave(duty_leave newDutyLeave)
         {
@@ -93,6 +99,7 @@ namespace WebApp_ebuilder.Controllers
         }
 
 
+        //display the list of duty leaves applied by a certain user
         public async System.Threading.Tasks.Task<ActionResult> ViewDutyLeaves()
         {
             try
@@ -103,6 +110,7 @@ namespace WebApp_ebuilder.Controllers
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
+                    //call the api to get the list of duty leaves applied by the logged in user
                     var response = await client.GetAsync("DutyLeaves?EID=" + User.EID);
                     if (response.IsSuccessStatusCode)
                     {
@@ -126,6 +134,8 @@ namespace WebApp_ebuilder.Controllers
             }
         }
 
+
+        //diplay the page to delete a duty leave applied by the user
         [HttpGet]
         public async System.Threading.Tasks.Task<ActionResult> Delete(int DLID)
         {
@@ -150,6 +160,8 @@ namespace WebApp_ebuilder.Controllers
             }
         }
 
+
+        //delete a duty leave if the user pressed the delete button
         public async System.Threading.Tasks.Task<ActionResult> Delete(duty_leave dutyLeave)
         {
             try
@@ -180,6 +192,8 @@ namespace WebApp_ebuilder.Controllers
 
         }
 
+
+        //display the page to edit the duty leave
         [HttpGet]
         public async System.Threading.Tasks.Task<ActionResult> Edit(string DLID)
         {
@@ -204,6 +218,8 @@ namespace WebApp_ebuilder.Controllers
             }
         }
 
+
+        //update the api if the user edited a duty leave
         [HttpPost]
         public async System.Threading.Tasks.Task<ActionResult> Edit(duty_leave dutyLeave)
         {

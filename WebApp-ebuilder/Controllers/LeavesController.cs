@@ -17,21 +17,17 @@ namespace WebApp_ebuilder.Controllers
     [CustomAuthorize]
     public class LeavesController : BaseController
     {
-        // GET: Leaves
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+        //diplay the page with apply leave frorm
         [CustomAuthorize]
         [HttpGet]               
         public ActionResult ApplyLeave()
         {
-            var model = new leaveApplyForm();
+            
             return View();
         }
 
 
+        //Get the completed form from from view and pass to the api
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize]
@@ -53,7 +49,8 @@ namespace WebApp_ebuilder.Controllers
 
                         var responseData = response.Content.ReadAsStringAsync().Result;
                         var leavesAvailable = JsonConvert.DeserializeObject<List<leave_type>>(responseData);
-
+                        
+                        //check whether all leaves are taken
                         if (leavesAvailable.FirstOrDefault(lt => lt.leaveCategory == leaveForm.leaveCategory).maxAllowed <= 0)
                         {
                             message = "All leaves for this category are already taken";
@@ -100,6 +97,8 @@ namespace WebApp_ebuilder.Controllers
             
         }
 
+        
+        //return to the page with charts for each leave category
         [HttpGet]
         [CustomAuthorize]
         public ActionResult ViewLeavesSummary()
@@ -109,6 +108,7 @@ namespace WebApp_ebuilder.Controllers
         }
 
 
+        //diplay the list of leaves of the employee
         [HttpGet]
         [CustomAuthorize]
         public async System.Threading.Tasks.Task<ActionResult> ViewLeaves(string EID)
@@ -149,6 +149,7 @@ namespace WebApp_ebuilder.Controllers
         }
 
 
+        //pass the json array to creates charts for the each type of leave category
         [CustomAuthorize]
         public async System.Threading.Tasks.Task<JsonResult> LeavesCount()
         {
@@ -194,6 +195,7 @@ namespace WebApp_ebuilder.Controllers
         }
 
 
+        //diplay the page to edit  a leave
         [HttpGet]
         [CustomAuthorize]
         public async System.Threading.Tasks.Task<ActionResult> Edit(int LID)
@@ -212,6 +214,7 @@ namespace WebApp_ebuilder.Controllers
             }
         }
 
+        //pass the edied leave to the api
         [HttpPost]
         [CustomAuthorize]
         public async System.Threading.Tasks.Task<ActionResult> Edit(leav leave)
@@ -248,6 +251,7 @@ namespace WebApp_ebuilder.Controllers
             }
         }
 
+        //diplay the page to delete a leave
         [HttpGet]
         [CustomAuthorize]
         public async System.Threading.Tasks.Task<ActionResult> Delete(int LID)
@@ -282,6 +286,7 @@ namespace WebApp_ebuilder.Controllers
             }            
         }
 
+        //call the api to delete a leave if the user press the delete button
         [HttpPost]
         [CustomAuthorize]
         public async System.Threading.Tasks.Task<ActionResult> Delete(leav leave)
@@ -315,52 +320,7 @@ namespace WebApp_ebuilder.Controllers
         }
 
 
-        //public async System.Threading.Tasks.Task<JsonResult> LeavesLeft()
-        //{
-        //    using (HttpClient client = new HttpClient())
-        //    {
-        //        client.BaseAddress = new Uri(BaseUrl);
-        //        client.DefaultRequestHeaders.Accept.Clear();
-        //        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
-
-        //        var response = await client.GetAsync("Leaves/LeaveCount?EID=" + User.EID + "&startDate=2017-1-1&endDate=2018-10-10");
-        //        if (true)
-        //        {
-        //            var responseData = response.Content.ReadAsStringAsync().Result;
-        //            var leaveData = JsonConvert.DeserializeObject<allLeaveCount>(responseData);
-
-        //            List<string> labels = new List<string>();
-        //            leaveData.taken.ForEach(c => labels.Add(c.name));
-
-        //            List<int> takenCount = new List<int>();
-        //            List<int> leftCount = new List<int>();
-
-        //            leaveData.taken.ForEach(c => takenCount.Add(c.number));
-        //            leaveData.left.ForEach(c => leftCount.Add(c.number));
-
-
-
-        //            Chart _chart = new Chart();
-        //            _chart.labels = labels.ToArray();
-        //            _chart.datasets = new List<Datasets>();
-        //            List<Datasets> _dataSet = new List<Datasets>();
-        //            _dataSet.Add(new Datasets()
-        //            {
-        //                label = "Current Year",
-        //                data = leftCount.ToArray(),
-        //                backgroundColor = new string[] { "#0000FF", "#ffff00" },
-        //                borderColor = new string[] { "#0000FF", "#ffff00" },
-        //                borderWidth = "1"
-        //            });
-        //            _chart.datasets = _dataSet;
-        //            return Json(_chart, JsonRequestBehavior.AllowGet);
-
-
-        //            // return View();
-        //        }
-
-        //    }
-        //}
+        
 
 
     }

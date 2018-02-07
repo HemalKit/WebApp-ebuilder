@@ -178,7 +178,6 @@
     <Compile Include="Models\forgotPasswordCredential.cs" />
     <Compile Include="Models\leav.cs" />
     <Compile Include="Models\leaveApplyForm.cs" />
-    <Compile Include="Models\leaveParameter.cs" />
     <Compile Include="Models\leave_type.cs" />
     <Compile Include="Models\leavWithStatusAndName.cs" />
     <Compile Include="Models\notification.cs" />

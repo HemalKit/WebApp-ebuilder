@@ -15,6 +15,4 @@ namespace WebApp_ebuilder.Controllers
             get { return HttpContext.User as CustomPrincipal; }
        }
     }
-
-
 }

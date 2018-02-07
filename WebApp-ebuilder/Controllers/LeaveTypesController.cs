@@ -13,11 +13,11 @@ using System.Text;
 
 namespace WebApp_ebuilder.Controllers
 {
+    //only HR admin users can do actions in this class
     [CustomAuthorize(Roles ="HR Admin")]
     public class LeaveTypesController : BaseController
     {
-        // GET: LeaveTypes
-        
+        //diplay all the leave types
         public async System.Threading.Tasks.Task<ActionResult> Index()
         {
 
@@ -39,16 +39,19 @@ namespace WebApp_ebuilder.Controllers
 
         }
 
+        //display the page to add new leave type
         [HttpGet]
         public ActionResult Create()
         {
             return View();
         }
 
+        //get the form data from the view and pass them to the api
         [HttpPost]
         public async System.Threading.Tasks.Task<ActionResult> Create(leave_type newLeaveType)
         {
             var message = "";
+            //validate the form data
             if (ModelState.IsValid)
             {
                 
@@ -81,12 +84,14 @@ namespace WebApp_ebuilder.Controllers
             return View();
         }
 
+        //diplay the page to edit an existing leave type
         [HttpGet]
         public ActionResult Edit(string jobCategory, string leaveCategory)
         {
             return View();
         }
 
+        //get the form data from the form and update by passing the data to the api
         [HttpPost]
         public async System.Threading.Tasks.Task<ActionResult> Edit(leave_type newLeaveType)
         {

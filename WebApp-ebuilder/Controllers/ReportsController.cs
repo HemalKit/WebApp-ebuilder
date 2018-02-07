@@ -13,67 +13,13 @@ namespace WebApp_ebuilder.Controllers
     [CustomAuthorize(Roles = "HR Admin,Managerial")]
     public class ReportsController : BaseController
     {
-        // GET: Reports
+        //go to the page with charts, the view contains the charts
         public ActionResult Index()
         {
             return View();
         }
 
-        [HttpGet]
-        public ActionResult LeaveReports()
-        {
-            return View();
-        }
-
-        //needs edit
-        [HttpPost]
-        public RedirectToRouteResult LeaveReports(leaveParameter parameter)
-        {
-            if (parameter.leaveCategory == "all")
-            {
-                return RedirectToAction("AllLeaveReports", new { startDate = parameter.startDate, endDate = parameter.endDate });
-            }
-            else
-            {
-                return RedirectToAction("LeaveReportsByTypes", parameter);
-            }
-        }
-
-        //Get the all taken and available leave counts within a given range for the logged in user
-        //needs edit
-        //public async System.Threading.Tasks.Task<ActionResult> AllLeaveReports(string startDate, string endDate)
-        //{
-        //    using (HttpClient client = new HttpClient())
-        //    {
-        //        client.BaseAddress = new Uri(BaseUrl);
-        //        client.DefaultRequestHeaders.Accept.Clear();
-        //        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
-
-        //        var response = await client.GetAsync("Leaves/LeaveCount?EID=" + User.EID + "&startDate=" + startDate + "&endDate=" + endDate);
-        //        var responseData = response.Content.ReadAsStringAsync().Result;
-        //        var allLeaves = JsonConvert.DeserializeObject<allLeaveCount>(responseData);
-        //        return View();
-        //    }
-        //}
-
-        //needs edit
-       
-        public async System.Threading.Tasks.Task<ActionResult> LeaveReportsByTypes(leaveParameter parameter)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                client.BaseAddress = new Uri(BaseUrl);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
-
-                var response = await client.GetAsync("LeaveCountByType?EID=" + User.EID + "&leaveCategory=" + parameter.leaveCategory + "&startDate=" + parameter.startDate + "&endDate=" + parameter.endDate);
-                var responseData = response.Content.ReadAsStringAsync().Result;
-                var leaveCount = JsonConvert.DeserializeObject<count>(responseData);
-                return View();
-
-            }
-        }
-
+        //pass the chart object as json to the index view to craete a chart 
         public async System.Threading.Tasks.Task<JsonResult> LeavesAppliedByMonth()
         {
             
@@ -118,6 +64,7 @@ namespace WebApp_ebuilder.Controllers
             
         }
 
+        //pass the chart object as json to the index view to craete a chart
         public async System.Threading.Tasks.Task<ActionResult> LeavesAppliedByWeekday()
         {
            
