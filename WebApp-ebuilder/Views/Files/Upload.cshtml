@@ -6,16 +6,17 @@
 
 @if (ViewBag.Message != null)
 {
-    <div>@ViewBag.Message</div>
+    foreach(var m in ViewBag.Message)
+    {
+        <div>@m.Message</div><br/>
+
+    }
 }
 
 <h2>Upload</h2>
 
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.AID)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.date)
         </th>
@@ -34,9 +35,6 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AID)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.date)
             </td>

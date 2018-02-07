@@ -458,39 +458,5 @@ namespace WebApp_ebuilder.Controllers
             }
             
         }
-
-
-        //[HttpGet]
-        //[CustomAuthorize(Roles ="Managerial,HR Admin")]
-        //public ActionResult Details(string EID)
-        //{
-        //    try
-        //    {
-        //        using(HttpClient client = new HttpClient())
-        //        {
-        //            client.BaseAddress = new Uri(BaseUrl);
-        //        }
-        //    }
-
-        //}
-
-
-        /* [HttpDelete]
-         public async System.Threading.Tasks.Task<EmptyResult> RemoveAsync(string id)
-         {
-             using (HttpClient client = new HttpClient())
-             {
-                 client.BaseAddress = new Uri(BaseUrl);
-                 client.DefaultRequestHeaders.Accept.Clear();
-                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
-
-                 var response = await client.DeleteAsync("Employees/" + id);
-                 if( response.StatusCode == System.Net.HttpStatusCode.OK)
-                 {
-                     return EmptyResult;
-                 }
-
-             }
-         }*/
     }
 }

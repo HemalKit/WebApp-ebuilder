@@ -39,7 +39,6 @@ namespace WebApp_ebuilder.Controllers
                     using (var package = new ExcelPackage(file.InputStream))
                     {
                         ViewBag.Message = package.Workbook.ToString();
-                        //return View(new List<user>());
                         var currentSheet = package.Workbook.Worksheets;
                         var workSheet = currentSheet.FirstOrDefault();
                         var noOfCol = workSheet.Dimension.End.Column;
@@ -56,11 +55,10 @@ namespace WebApp_ebuilder.Controllers
                             attendances.Add(newAttendance);
                         }
                     }
-                    //return View(attendances);
 
                     if (attendances != null)
                     {
-                        ViewBag.Message = "";
+                        var messages = new List<dynamic>();
                         foreach (attendance newAttendance in attendances)
                         {
                             using (HttpClient client = new HttpClient())
@@ -73,13 +71,16 @@ namespace WebApp_ebuilder.Controllers
                                 var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
                                 var response = await client.PostAsync("Attendance", stringContent);
 
-                                var message = response.Content.ReadAsStringAsync().Result;
-                                ViewBag.Message += JsonConvert.DeserializeObject(message);
-
+                                var responseData = response.Content.ReadAsStringAsync().Result;
+                                if (!response.IsSuccessStatusCode)
+                                {
+                                    messages.Add(JsonConvert.DeserializeObject<dynamic>(responseData));
+                                }
+                                
                             }
                         }
+                        ViewBag.Message = messages;
                         return View(attendances);
-                        //return RedirectToAction("AddAttendance", "Attendance", new { attendances = attendances });
                     }
                     return View(new List<attendance>());
                 }
