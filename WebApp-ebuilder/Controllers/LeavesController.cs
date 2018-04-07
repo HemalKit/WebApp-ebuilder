@@ -64,7 +64,6 @@ namespace WebApp_ebuilder.Controllers
                         newLeave.jobCategory = User.Role;
                         newLeave.leaveCategory = leaveForm.leaveCategory;
 
-                        var serializer = new JavaScriptSerializer();
                         
                         var json = JsonConvert.SerializeObject(newLeave);
                         var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
@@ -79,11 +78,9 @@ namespace WebApp_ebuilder.Controllers
                         }
                         else
                         {
-                           var content = response.Content.ReadAsStringAsync().Result;
-                            message = JsonConvert.DeserializeObject<string>(content);
-                        
+                            message = "Error Occured";
+                          
                         }
-
                     }
                 }
                 ViewBag.Message = message;

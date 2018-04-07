@@ -15,6 +15,20 @@ namespace WebApp_ebuilder.Models
 
     public partial class employee
     {
+        public employee(employeeRegister emp)
+        {
+            this.EID = emp.EID;
+            this.email = emp.email;
+            this.fName = emp.fName;
+            this.lName = emp.lName;
+            this.dob = emp.dob;
+            this.gender = emp.gender;
+            this.homeNo = emp.homeNo;
+            this.street = emp.street;
+            this.city = emp.city;
+            this.jobCategory = emp.jobCategory;
+        }
+
         public employee()
         {
             this.attendances = new HashSet<attendance>();

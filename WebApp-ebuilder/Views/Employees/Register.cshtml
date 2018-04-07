@@ -118,7 +118,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.jobCategory, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.jobCategory, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.jobCategory, new List<SelectListItem> {
+               new SelectListItem{Text="Non-Managerial", Value="Non-Managerial"},
+               new SelectListItem{Text="Managerial", Value="Managerial"},
+               new SelectListItem{Text="HR Admin", Value="HR Admin"}
+           }, new { htmlAttributes = new { @class = "form-control dropdown-menu" } })
                 @Html.ValidationMessageFor(model => model.jobCategory, "", new { @class = "text-danger" })
             </div>
         </div>
