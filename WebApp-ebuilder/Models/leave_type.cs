@@ -11,6 +11,7 @@ namespace WebApp_ebuilder.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     public partial class leave_type
     {
@@ -19,10 +20,25 @@ namespace WebApp_ebuilder.Models
             this.leavs = new HashSet<leav>();
         }
 
+        [Required(ErrorMessage ="Required")]
+        [Display(Name ="Job Category")]
         public string jobCategory { get; set; }
+
+        [Required(ErrorMessage ="Required")]
+        [Display(Name ="Leave Category")]
         public string leaveCategory { get; set; }
+
+        [Required(ErrorMessage ="Required")]
+        [Display(Name ="Max Allowed")]
+        [Range(0,int.MaxValue,ErrorMessage ="Enter a valid number")]
         public int maxAllowed { get; set; }
 
         internal virtual ICollection<leav> leavs { get; set; }
+    }
+
+    public enum jobCategories
+    {
+        
+
     }
 }

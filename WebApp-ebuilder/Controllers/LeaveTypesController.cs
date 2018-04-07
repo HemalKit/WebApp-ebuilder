@@ -13,11 +13,11 @@ using System.Text;
 
 namespace WebApp_ebuilder.Controllers
 {
+    //only HR admin users can do actions in this class
     [CustomAuthorize(Roles ="HR Admin")]
     public class LeaveTypesController : BaseController
     {
-        // GET: LeaveTypes
-        
+        //diplay all the leave types
         public async System.Threading.Tasks.Task<ActionResult> Index()
         {
 
@@ -39,16 +39,19 @@ namespace WebApp_ebuilder.Controllers
 
         }
 
+        //display the page to add new leave type
         [HttpGet]
         public ActionResult Create()
         {
             return View();
         }
 
+        //get the form data from the view and pass them to the api
         [HttpPost]
         public async System.Threading.Tasks.Task<ActionResult> Create(leave_type newLeaveType)
         {
             var message = "";
+            //validate the form data
             if (ModelState.IsValid)
             {
                 
@@ -58,12 +61,11 @@ namespace WebApp_ebuilder.Controllers
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                    var serializer = new JavaScriptSerializer();
-                    var json = serializer.Serialize(newLeaveType);
+                    var json = JsonConvert.SerializeObject(newLeaveType);
                     var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
                     var response = await client.PostAsync("LeaveTypes", stringContent);
-                    if (response.StatusCode == System.Net.HttpStatusCode.Created)
+                    if (response.IsSuccessStatusCode)
                     {
                         message = "Successfully created";
                     }
@@ -82,12 +84,14 @@ namespace WebApp_ebuilder.Controllers
             return View();
         }
 
+        //diplay the page to edit an existing leave type
         [HttpGet]
         public ActionResult Edit(string jobCategory, string leaveCategory)
         {
             return View();
         }
 
+        //get the form data from the form and update by passing the data to the api
         [HttpPost]
         public async System.Threading.Tasks.Task<ActionResult> Edit(leave_type newLeaveType)
         {
@@ -97,10 +101,8 @@ namespace WebApp_ebuilder.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/Json"));
 
-                var serializer = new JavaScriptSerializer();
-                var json = serializer.Serialize(newLeaveType);
+                var json = JsonConvert.SerializeObject(newLeaveType);
                 var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
-
 
                 var response = await client.PutAsync("LeaveTypes?jobCategory=" + newLeaveType.jobCategory + "&leaveCategory=" + newLeaveType.leaveCategory, stringContent);
                 if(response.StatusCode == System.Net.HttpStatusCode.OK)

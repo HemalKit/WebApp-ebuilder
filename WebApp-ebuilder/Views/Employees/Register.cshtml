@@ -1,22 +1,38 @@
-﻿@model WebApp_ebuilder.Models.employeeRegister
+﻿@using WebApp_ebuilder.Models
+@model WebApp_ebuilder.Models.employeeRegister
 
 @{
     ViewBag.Title = "Register";
 }
 
+@section Scripts{
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+
+  $(document).ready(function() {
+      $("#dob").datepicker({
+          dateFormat:"dd/mm/yy",
+          minDate: "-0D -0M -100Y",
+          maxDate: "+0D +0M -18Y"
+      });
+  });
+    </script>
+}
+
+
 @if (ViewBag.Message!= null)
 {
     <h3>@ViewBag.Message</h3>
-
 }
-<h2>Register</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>employeeRegister</h4>
+        <h4>Register a new Employee</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -70,7 +86,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.gender, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.gender, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.gender, new SelectList(Enum.GetValues(typeof(genders))),"Select gender", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.gender, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -115,6 +131,4 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+

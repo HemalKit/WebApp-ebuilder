@@ -1,0 +1,122 @@
+﻿@model WebApp_ebuilder.Models.employee
+
+@{
+    ViewBag.Title = "ViewProfile";
+}
+
+<h2>My Profile</h2>
+
+<div>
+    <hr />
+    <div class="card">
+        <div class="card-body">
+            
+                
+            <div class="card-deck">
+                <div class="card-header">
+                    @Html.DisplayNameFor(model => model.EID)
+                </div>
+                
+                <div class="card-body">
+                    @Html.DisplayFor(model => model.EID)
+                </div>
+
+            </div>
+
+            <hr/>
+            <div class="card-deck">
+                <div class="card-header">
+                    @Html.DisplayNameFor(model => model.email)
+                </div>
+
+                <div class="card-body">
+                    @Html.DisplayFor(model => model.email)
+                </div>
+            </div>
+
+
+            <hr/>
+            <div class="card-deck">
+                <div class="card-header">
+                    @Html.DisplayNameFor(model => model.dob)
+                </div>
+
+                <div class="card-body">
+                    @Html.DisplayFor(model => model.dob)
+                </div>
+            </div>
+
+               <hr/>
+            <div class="card-deck">
+                <div class="card-header">
+                    @Html.DisplayNameFor(model => model.fName)
+                </div>
+                <div class="card-body">
+                    @Html.DisplayFor(model => model.fName)
+                </div>
+            </div>
+
+            <hr/>
+            <div class="card-deck">
+                <div class="card-header">
+                    @Html.DisplayNameFor(model => model.lName)
+                </div>
+                <div class="card-body">
+                    @Html.DisplayFor(model => model.lName)
+                </div>
+            </div>
+
+            <hr/>
+            <div class="card-deck">
+                <div class="card-header">
+                    @Html.DisplayNameFor(model => model.gender)
+                </div>
+                <div class="card-body">
+                    @Html.DisplayFor(model => model.gender)
+                </div>
+            </div>
+
+            <hr />
+            <div class="card-deck">
+                <div class="card-header">
+                    @Html.DisplayNameFor(model => model.homeNo)
+                </div>
+                <div class="card-body">
+                    @Html.DisplayFor(model => model.homeNo)
+                </div>
+            </div>
+
+            <hr />
+            <div class="card-deck">
+                <div class="card-header">
+                    @Html.DisplayNameFor(model => model.street)
+                </div>
+                <div class="card-body">
+                    @Html.DisplayFor(model => model.street)
+                </div>
+            </div>
+
+            <hr />
+            <div class="card-deck">
+                <div class="card-header">
+                    @Html.DisplayNameFor(model => model.city)
+                </div>
+                <div class="card-body">
+                    @Html.DisplayFor(model => model.city)
+                </div>
+            </div>
+
+            <hr />
+            <div class="card-deck">
+                <div class="card-header">
+                    @Html.DisplayNameFor(model => model.jobCategory)
+                </div>
+                <div class="card-body">
+                    @Html.DisplayFor(model => model.jobCategory)
+                </div>
+            </div>
+
+
+            </div>
+    </div>
+</div>

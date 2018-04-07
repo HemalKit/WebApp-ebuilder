@@ -1,0 +1,20 @@
+﻿
+<h2>Upload Attendace Records</h2>
+
+
+@using (Html.BeginForm("Upload", "Files", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <table>
+        <tr>
+            <td>File:</td>
+            <td>
+                <input type="file" name="UploadedFile" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" name="Submit" value="Submit" class="btn btn-primary" />
+            </td>
+        </tr>
+    </table>
+}

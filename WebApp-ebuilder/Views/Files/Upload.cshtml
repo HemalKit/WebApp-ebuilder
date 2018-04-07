@@ -1,0 +1,54 @@
+﻿@model IEnumerable<WebApp_ebuilder.Models.attendance>
+
+@{
+    ViewBag.Title = "Upload";
+}
+
+@if (ViewBag.Message != null)
+{
+    foreach(var m in ViewBag.Message)
+    {
+        <div>@m.Message</div><br/>
+
+    }
+}
+
+<h2>Upload</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.checkIn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.checkOut)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EID)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.checkIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.checkOut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EID)
+            </td>
+            
+        </tr>
+    }
+
+</table>

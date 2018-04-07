@@ -1,16 +1,15 @@
-﻿@model IEnumerable<WebApp_ebuilder.Models.attendance>
+﻿@model IEnumerable<WebApp_ebuilder.Models.attendanceWithWorkingHours>
 
 @{
     ViewBag.Title = "ViewAttendance";
 }
 
-<h2>ViewAttendance</h2>
+<h2>Attendance</h2>
+
 
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.AID)
-        </th>
+        
         <th>
             @Html.DisplayNameFor(model => model.date)
         </th>
@@ -23,14 +22,15 @@
         <th>
             @Html.DisplayNameFor(model => model.EID)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.workingHours)
+        </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.AID)
-        </td>
+        
         <td>
             @Html.DisplayFor(modelItem => item.date)
         </td>
@@ -40,15 +40,16 @@
         <td>
             @Html.DisplayFor(modelItem => item.checkOut)
         </td>
+        
         <td>
             @Html.DisplayFor(modelItem => item.EID)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.DisplayFor(modelItem => item.workingHours)
         </td>
+        
     </tr>
 }
 
 </table>
+

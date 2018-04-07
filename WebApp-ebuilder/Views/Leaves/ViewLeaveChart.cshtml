@@ -1,0 +1,32 @@
+﻿<script src="~/Scripts/jquery-2.2.3.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Scripts/Chart.min.js"></script>
+
+    
+        <canvas id="doughnut_chart"></canvas>
+
+
+<script>
+    var Labels = @Html.Raw(Json.Encode(ViewBag.Labels));
+    var LeftCount = @Html.Raw(Json.Encode(ViewBag.LeftCount));
+    var TakenCount = @Html.Raw(Json.Encode(ViewBag.TakenCount));
+
+
+    var ctx = $("#doughnut_chart");
+    var doughnutChart = new Chart(ctx,
+        {
+        type: 'doughnut',
+        data: {
+            labels: Labels,
+            datasets: [{
+                label: "Doughnut Chart",
+                data: LeftCount,
+                backgroundColor: ["rgba(255,0,0,0.5)", "rgb(255,255,0,0.5)"],
+                borderColor: ["rgb(0,0,0)", "rgb(0,0,0)"],
+                borderWidth: 1
+            }]
+        }        
+    });
+
+</script>

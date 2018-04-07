@@ -1,14 +1,12 @@
-﻿@model IEnumerable<WebApp_ebuilder.Models.leav>
+﻿@model IEnumerable<WebApp_ebuilder.Models.leavWithStatusAndName>
 
 @{
     ViewBag.Title = "ViewLeaves";
 }
 
-<h2>ViewLeaves</h2>
+<h2>All Leaves</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table">
     <tr>
         <th>
@@ -21,14 +19,21 @@
             @Html.DisplayNameFor(model => model.reason)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.EID)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.leaveCategory)
         </th>
+        @if (HttpContext.Current.User.IsInRole("HR Admin") | HttpContext.Current.User.IsInRole("Managerial"))
+        {
         <th>
             @Html.DisplayNameFor(model => model.jobCategory)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EID)
+        </th>
+        }
+        <th>
+            @Html.DisplayNameFor(model => model.status)
+        </th>
+        
         <th></th>
     </tr>
 
@@ -44,18 +49,29 @@
             @Html.DisplayFor(modelItem => item.reason)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.EID)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.leaveCategory)
         </td>
+         @if (HttpContext.Current.User.IsInRole("HR Admin") | HttpContext.Current.User.IsInRole("Managerial"))
+         {
         <td>
             @Html.DisplayFor(modelItem => item.jobCategory)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.DisplayFor(modelItem => item.EID)
+        </td>
+         }
+        <td>
+            @Html.DisplayFor(modelItem => item.status)
+        </td>
+       
+        <td>
+            @if (DateTime.Compare(item.date, DateTime.Today) > 0)
+            {
+            @Html.ActionLink("Edit  ", "Edit", new { LID=item.LID })
+            
+            
+            @Html.ActionLink("Delete", "Delete", new { LID=item.LID })
+            }
         </td>
     </tr>
 }

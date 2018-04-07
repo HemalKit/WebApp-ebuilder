@@ -1,14 +1,10 @@
-﻿@model IEnumerable<WebApp_ebuilder.Models.duty_leave>
+﻿@model IEnumerable<WebApp_ebuilder.Models.dutyLeaveView>
 
 @{
     ViewBag.Title = "ViewDutyLeaves";
 }
 
-<h2>ViewDutyLeaves</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -21,7 +17,7 @@
             @Html.DisplayNameFor(model => model.appointmentTime)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.duration)
+            @Html.DisplayNameFor(model => model.endTime)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.EID)
@@ -29,12 +25,14 @@
         <th>
             @Html.DisplayNameFor(model => model.location)
         </th>
+        
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
+            
             @Html.DisplayFor(modelItem => item.DLID)
         </td>
         <td>
@@ -44,7 +42,7 @@
             @Html.DisplayFor(modelItem => item.appointmentTime)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.duration)
+            @Html.DisplayFor(modelItem => item.endTime)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.EID)
@@ -52,20 +50,24 @@
         <td>
             @Html.DisplayFor(modelItem => item.location)
         </td>
+        
         <td>
+            @Html.ActionLink("Track Details", "TrackLocation", new { dlid = item.DLID })
+
             @if (DateTime.Compare(item.date, DateTime.Today) >= 0)
             {
-                @Html.ActionLink("Edit ", "Edit", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit ", "Edit", new { DLID=item.DLID })
                
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Delete", "Delete", new { DLID=item.DLID })
 
             }
 
-               @Html.ActionLink("Track Details", "TrackLocation", new { dlid = item.DLID })
+              
            
 
         </td>
     </tr>
 }
-
 </table>
+
+

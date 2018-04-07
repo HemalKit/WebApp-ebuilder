@@ -1,0 +1,86 @@
+﻿@model WebApp_ebuilder.Models.leav
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+@section Scripts{
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+
+  $(document).ready(function() {
+      $("#date").datepicker({
+          dateFormat:"dd/mm/yy",
+          minDate: -0,
+          maxDate: "+0D +0M +10Y"
+
+      });
+  });
+    </script>
+}
+
+
+<h2>Edit</h2>
+
+@if(ViewBag.Message != null)
+{
+    <div>@ViewBag.Message</div>
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.reason, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.reason, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.reason, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.leaveCategory,htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.leaveCategory, new List<SelectListItem> {
+               new SelectListItem{Text="Casual",Value="casual"},
+               new SelectListItem{Text="Half Day", Value="half day"},
+               new SelectListItem{Text="Medical", Value="medical"},
+               new SelectListItem{Text="Short Leave", Value="short leave"}
+                 }, new { htmlAttributes = new { @class = "form-control dropdown-menu" } })
+                @Html.ValidationMessageFor(model => model.leaveCategory, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "ViewLeaves",new { EID = User.EID})
+</div>

@@ -1,0 +1,34 @@
+﻿<script src="~/Scripts/jquery-2.2.3.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/Chart.min.js"></script>
+
+<div id="chart_container">
+    <canvas id="bar_chart"></canvas>
+</div>
+
+<script>
+    var xValues = @Html.Raw(Json.Encode(ViewBag.xValues));
+    var yValues = @Html.Raw(Json.Encode(ViewBag.yValues));
+
+    var ctx = $("#bar_chart");
+    var barChart = new Chart(ctx,
+        {
+        type: 'bar',
+        data: {
+            labels: xValues,
+            datasets: [{
+                label: "Bar Chart",
+                data: yValues,
+                backgroundColor: ["rgba(255,0,0,0.5)", "rgb(255,255,0,0.5)"],
+                borderColor: ["rgb(0,0,0)", "rgb(0,0,0)"],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            maintainAspectRatio: true,
+            scales: { xAxes: [{ ticks: { beginAtZero: true } }] },
+            legend: { display: false }
+        }
+    });
+
+</script>

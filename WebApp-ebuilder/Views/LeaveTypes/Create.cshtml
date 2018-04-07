@@ -4,20 +4,28 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+@if(ViewBag.Message != null)
+{
+    <div><h3>@ViewBag.Message</h3></div>
+}
+
+<h2>Add a Leave Type</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>leave_type</h4>
-        <hr />
+ 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.jobCategory, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.jobCategory, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.jobCategory, new List<SelectListItem> {
+               new SelectListItem{Text="Non Mangerial", Value="Non Managerial"},
+               new SelectListItem{Text="Managrial", Value="Managerial"},
+               new SelectListItem{Text="HR Admin", Value="HR Admin"}
+           } ,new { htmlAttributes = new { @class = "form-control dropdown-menu" } })
                 @Html.ValidationMessageFor(model => model.jobCategory, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -47,5 +55,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("To the List", "Index")
 </div>

@@ -9,30 +9,16 @@ namespace WebApp_ebuilder.Controllers
 {
     public class HomeController : BaseController
     {
-        public ActionResult Index()
+        public RedirectToRouteResult Index()
         {
-            return View();
+            return RedirectToAction("Login","Employees");
         }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
         
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
 
         [CustomAuthorize]
         public ActionResult Dashboard()
         {
-            //ViewBag.Message = User.ToString(); 
+            ViewBag.UserRole = User.Role; 
             return View();
         }
     }

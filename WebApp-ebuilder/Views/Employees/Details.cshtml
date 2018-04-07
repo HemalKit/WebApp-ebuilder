@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<button onclick="location.href='@Url.Action("ViewLeaves", "Leaves",new { EID=ViewBag.EID})'" class="btn btn-primary">
+    Leave Details
+</button>
+
+<button onclick="location.href='@Url.Action("ViewAttendance", "Attendance",new { EID=ViewBag.EID})'" class="btn btn-primary">
+    Attendance Details
+</button>
+
+<button onclick="location.href='@Url.Action("ViewDutyLeaves", "DutyLeaves",new { EID=ViewBag.EID})'" class="btn btn-primary">
+    Duty Leave Details
+</button>
+
+<button onclick="location.href='@Url.Action("WorkingHours", "Attendance",new { EID=ViewBag.EID})'" class="btn btn-primary">
+    Working Hours
+</button>

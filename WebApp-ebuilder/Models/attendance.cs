@@ -20,6 +20,6 @@ namespace WebApp_ebuilder.Models
         public Nullable<System.TimeSpan> checkOut { get; set; }
         public string EID { get; set; }
 
-        public virtual employee employee { get; set; }
+        //internal virtual employee employee { get; set; }
     }
 }

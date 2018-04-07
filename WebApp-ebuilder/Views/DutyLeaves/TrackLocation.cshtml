@@ -4,57 +4,8 @@
     ViewBag.Title = "TrackLocation";
 }
 
-<h2>TrackLocation</h2>
+<h2>Location Trackings</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TRID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.longitude)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.latitude)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.time)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DLID)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TRID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.longitude)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.latitude)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.time)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DLID)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
-
-</table>
 
 
 @section scripts {
@@ -104,13 +55,9 @@
         </script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBewol6l7X97NUVa3LgVUXBPS9i9ThbRB4&callback=myMap"></script>
 
-        <!--
-        To use this code on your website, get a free API key from Google.
-        Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
-        -->
 
     </body>
-}_
+}
 
 
 

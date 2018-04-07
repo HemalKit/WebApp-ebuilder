@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Manage";
+}
+
+<h2>Manage</h2>
+
+@if (HttpContext.Current.User.IsInRole("HR Admin"))
+{
+
+<button onclick="location.href='@Url.Action("Index", "Files")'" class="btn btn-primary">
+    Upload Attendance Records
+</button>
+
+<button onclick="location.href='@Url.Action("Register")'" class="btn btn-primary">
+    Register New Employee
+</button>
+}
+
+<button onclick="location.href='@Url.Action("ViewPendingApprovals", "Approvals")'" class="btn btn-primary">
+    Pending Leave Approvals
+</button>
+
+<button onclick="location.href='@Url.Action("ViewEmployees")'" class="btn btn-primary">
+    View All Employees
+</button>
